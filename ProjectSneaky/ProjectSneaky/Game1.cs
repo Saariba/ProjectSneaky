@@ -11,7 +11,7 @@ namespace ProjectSneaky
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        // Hello? Anyone there?
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
