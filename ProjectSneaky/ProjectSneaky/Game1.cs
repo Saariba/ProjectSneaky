@@ -11,7 +11,13 @@ namespace ProjectSneaky
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        // Hello? Anyone there?
+
+        //Class Member Variable
+
+        Texture2D playerTexture;
+
+        Vector2 playerPosition;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -28,6 +34,7 @@ namespace ProjectSneaky
         {
             // TODO: Add your initialization logic here
 
+            playerPosition = new Vector2(100, 100);
             base.Initialize();
         }
 
@@ -40,6 +47,7 @@ namespace ProjectSneaky
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            playerTexture = Content.Load<Texture2D>("Player/PixelGuy");
             // TODO: use this.Content to load your game content here
         }
 
@@ -62,6 +70,20 @@ namespace ProjectSneaky
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            KeyboardState key = Keyboard.GetState();
+
+            if (key.IsKeyDown(Keys.Up))
+                playerPosition.Y -= 1;
+
+            if (key.IsKeyDown(Keys.Down))
+                playerPosition.Y += 1;
+
+            if (key.IsKeyDown(Keys.Left))
+                playerPosition.X -= 1;
+
+            if (key.IsKeyDown(Keys.Right))
+                playerPosition.X += 1;
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -74,6 +96,14 @@ namespace ProjectSneaky
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+
+            spriteBatch.Begin();
+
+            spriteBatch.Draw(playerTexture, playerPosition, Color.White);
+
+
+            spriteBatch.End();
 
             // TODO: Add your drawing code here
 
