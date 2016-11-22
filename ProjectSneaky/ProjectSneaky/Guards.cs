@@ -30,7 +30,12 @@ namespace ProjectSneaky
         public void Update()
         {
             Vector2 move = currentTarget - guardPosition;
-            move.Normalize();
+
+            if (move.Length > 1.0f)
+            {
+                move.Normalize();
+            }
+
             move *= speed;
             guardPosition += move;
 
