@@ -29,17 +29,21 @@ namespace ProjectSneaky
 
         public void Update()
         {
-         
-                Vector2 move = targetPos1 - guardPosition;
-                move.Normalize();
-                move *= speed;
-                guardPosition += move;
-            
-           if (guardPosition == targetPos1)
+
+            Vector2 move = targetPos1 - guardPosition;
+            move.Normalize();
+            move *= speed;
+            guardPosition += move;
+
+
+            if (guardPosition == targetPos1)
             {
-                guardPosition = targetPos2;   
+                move *= -1;
+                while (guardPosition != targetPos2)
+                {
+                    guardPosition += move;
+                }
             }
-            
         }
 
 
