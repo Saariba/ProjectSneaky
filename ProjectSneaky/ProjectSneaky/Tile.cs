@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace ProjectSneaky
 {
@@ -18,9 +18,10 @@ namespace ProjectSneaky
 
         public Tile(Texture2D _texture, Vector2 _position, int _id)
         {
-            _texture = texture;
-            _position = position;
+            texture = _texture;
+            position = _position;
             id = _id;
+
         }
 
         public void Update(GameTime gameTime)
@@ -32,6 +33,6 @@ namespace ProjectSneaky
         {
             spriteBatch.Draw(texture, position, Color.White);
         }
-    }
 
+    }
 }

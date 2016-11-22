@@ -22,6 +22,8 @@ namespace ProjectSneaky
         Guards guard1;
         Guards guard2;
         Player player;
+        private Tilemap tileMap;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -40,6 +42,7 @@ namespace ProjectSneaky
 
            
             base.Initialize();
+            tileMap = new Tilemap(new Texture2D[] { Content.Load<Texture2D>("Floor"), Content.Load<Texture2D>("Wall") }, Content.Load<Texture2D>("bitMap"), 16);
         }
 
         /// <summary>
@@ -75,6 +78,7 @@ namespace ProjectSneaky
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            tileMap.Update(gameTime);
             player.Update();
             guard1.Update();
             guard2.Update();
@@ -90,6 +94,8 @@ namespace ProjectSneaky
 
 
             spriteBatch.Begin();
+
+            tileMap.Draw(spriteBatch);
 
             player.Draw(spriteBatch);
             guard1.Draw(spriteBatch);
