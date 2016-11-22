@@ -37,15 +37,9 @@ namespace ProjectSneaky
             
            if (guardPosition == targetPos1)
             {
-                while(guardPosition != targetPos2)
-                {
 
-                    move = targetPos2 - guardPosition;
-                    move.Normalize();
-                    move *= speed;
-                    guardPosition += move;
-
-                }
+                guardPosition = targetPos2;
+                
             }
             
         }
