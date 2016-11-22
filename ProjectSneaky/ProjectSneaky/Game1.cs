@@ -20,6 +20,7 @@ namespace ProjectSneaky
         Vector2 playerPosition;
 
         Guards guard1;
+        Guards guard2;
         Player player;
         public Game1()
         {
@@ -51,6 +52,7 @@ namespace ProjectSneaky
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             guard1 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(0, 40), new Vector2(600, 40),new Vector2(0,40), 1.5f);
+            guard2 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(0, 80), new Vector2(400, 80), new Vector2(0, 80), 1.5f);
             player = new Player(Content.Load<Texture2D>("Player/PixelGuy"), new Vector2(100, 100));
             // TODO: use this.Content to load your game content here
         }
@@ -75,7 +77,7 @@ namespace ProjectSneaky
                 Exit();
             player.Update();
             guard1.Update();
-
+            guard2.Update();
         }
 
         /// <summary>
@@ -91,7 +93,7 @@ namespace ProjectSneaky
 
             player.Draw(spriteBatch);
             guard1.Draw(spriteBatch);
-
+            guard2.Draw(spriteBatch);
             spriteBatch.End();
 
             // TODO: Add your drawing code here
