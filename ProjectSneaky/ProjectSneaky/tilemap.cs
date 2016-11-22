@@ -46,7 +46,7 @@ namespace ProjectSneaky
                     else
                     {
                         //Walls
-                        tileMap[x, y] = new Tile(textures[0], new Vector2(x * tileSize, y * tileSize), 1);
+                        tileMap[x, y] = new Tile(textures[1], new Vector2(x * tileSize, y * tileSize), 1);
                     }
                 }
             }

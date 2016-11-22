@@ -15,9 +15,6 @@ namespace ProjectSneaky
         //Class Member Variable
 
         
-        Texture2D playerTexture;
-
-        Vector2 playerPosition;
 
         Guards guard1;
         Guards guard2;
