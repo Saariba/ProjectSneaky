@@ -50,7 +50,7 @@ namespace ProjectSneaky
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            guard1 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(0, 40), new Vector2(600, 40),new Vector2(0,40), 1.5f);
+            guard1 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(-0, 40), new Vector2(600, 40),new Vector2(0,40), 1.5f);
             player = new Player(Content.Load<Texture2D>("Player/PixelGuy"), new Vector2(100, 100));
             // TODO: use this.Content to load your game content here
         }
