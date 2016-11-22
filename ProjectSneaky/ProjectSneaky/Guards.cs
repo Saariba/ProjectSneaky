@@ -16,8 +16,7 @@ namespace ProjectSneaky
         Vector2 targetPos1;
         Vector2 targetPos2;
         float speed;
-
-
+        Vector2 currentTarget;
         public Guards (Texture2D _guardTexture, Vector2 _guardPosition,Vector2 _targetPos1,Vector2 _targetPos2,float _speed)
         {
             guardTexture = _guardTexture;
@@ -25,21 +24,40 @@ namespace ProjectSneaky
             targetPos1 = _targetPos1;
             speed = _speed;
             targetPos2 = _targetPos2;
+            currentTarget = _targetPos1;
         }
 
         public void Update()
         {
-         
-                Vector2 move = targetPos1 - guardPosition;
-                move.Normalize();
-                move *= speed;
-                guardPosition += move;
-            
-           if (guardPosition == targetPos1)
+            Vector2 move = currentTarget - guardPosition;
+            move.Normalize();
+            move *= speed;
+            guardPosition += move;
+
+            if(guardPosition == targetPos1)
             {
-                guardPosition = targetPos2;   
+                currentTarget = targetPos2;
             }
-            
+
+            if(guardPosition == targetPos2)
+            {
+                currentTarget = targetPos1;
+            }
+
+            /* Vector2 move = targetPos1 - guardPosition;
+             move.Normalize();
+             move *= speed;
+             guardPosition += move;
+
+
+             if (guardPosition == targetPos1)
+             {
+                 move *= -1;
+                 while (guardPosition != targetPos2)
+                 {
+                     guardPosition += move;
+                 }
+             }*/
         }
 
 
