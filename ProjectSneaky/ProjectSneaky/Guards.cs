@@ -37,9 +37,7 @@ namespace ProjectSneaky
             
            if (guardPosition == targetPos1)
             {
-
-                guardPosition = targetPos2;
-                
+                guardPosition = targetPos2;   
             }
             
         }
