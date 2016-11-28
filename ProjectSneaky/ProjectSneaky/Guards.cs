@@ -24,7 +24,7 @@ namespace ProjectSneaky
         Rectangle fieldOfView;
 
         Player player;
-        Boolean playerDetected;
+        bool playerDetected;
 
 
         public Guards (Texture2D _guardTexture, Vector2 _guardPosition,Vector2 _targetPos1,Vector2 _targetPos2,
@@ -61,14 +61,31 @@ namespace ProjectSneaky
 
         void Patrol() // Patrol
         {
-            if (Vector2.Distance(guardPosition, targetPos1) < 0.0001)
+            if (playerDetected == false)
             {
-                currentTarget = targetPos2;
+                if (Vector2.Distance(guardPosition, targetPos1) < 0.0001)
+                {
+                    currentTarget = targetPos2;
+                }
+
+                if (Vector2.Distance(guardPosition, targetPos2) < 0.0001)
+                {
+                    currentTarget = targetPos1;
+                }
             }
-            if (Vector2.Distance(guardPosition, targetPos2) < 0.0001)
+            else
             {
-                currentTarget = targetPos1;
+                currentTarget = player.playerPosition;    //PlayerChase
             }
+
+            move = currentTarget - guardPosition;
+
+            if (move.Length() * speed > 1)
+                move.Normalize();
+
+
+            move *= speed;
+            guardPosition += move;
         }
 
 
@@ -122,13 +139,8 @@ namespace ProjectSneaky
         public void Update()
         {
             Patrol();
-            PlayerDetection();
-            PlayerChase();
+            PlayerDetection();  
             DirectionFacing();
-
-
-
-
         }  
 
         public void Draw(SpriteBatch spriteBatch)
