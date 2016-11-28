@@ -12,7 +12,8 @@ namespace ProjectSneaky
     class Player
     {
         Texture2D playerTexture;
-        Vector2 playerPosition;
+        public Vector2 playerPosition;
+        Rectangle rectPlayer;
         
 
         public Player(Texture2D _playerTexture,Vector2 _playerPosition)
@@ -37,6 +38,8 @@ namespace ProjectSneaky
 
             if (key.IsKeyDown(Keys.Right))
                 playerPosition.X += 1;
+
+
         }
 
         public void Draw(SpriteBatch spriteBatch)
