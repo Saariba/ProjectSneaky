@@ -23,22 +23,27 @@ namespace ProjectSneaky
            
         }
 
-        public void Update()
+         void Movement()
         {
             KeyboardState key = Keyboard.GetState();
 
-            if (key.IsKeyDown(Keys.Up))
+            if (key.IsKeyDown(Keys.Up) || (key.IsKeyDown(Keys.W)))
                 playerPosition.Y -= 1;
 
-            if (key.IsKeyDown(Keys.Down))
+            if (key.IsKeyDown(Keys.Down) || (key.IsKeyDown(Keys.S)))
                 playerPosition.Y += 1;
 
-            if (key.IsKeyDown(Keys.Left))
+            if (key.IsKeyDown(Keys.Left) || (key.IsKeyDown(Keys.A)))
                 playerPosition.X -= 1;
 
-            if (key.IsKeyDown(Keys.Right))
+            if (key.IsKeyDown(Keys.Right) || (key.IsKeyDown(Keys.D)))
                 playerPosition.X += 1;
+        }
 
+
+        public void Update()
+        {
+            Movement();
 
         }
 

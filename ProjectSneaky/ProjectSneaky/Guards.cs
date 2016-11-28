@@ -58,9 +58,9 @@ namespace ProjectSneaky
 
         }
 
-        public void Update()
+
+        void Patrol() // Patrol
         {
-            // Patrol
             if (Vector2.Distance(guardPosition, targetPos1) < 0.0001)
             {
                 currentTarget = targetPos2;
@@ -69,27 +69,33 @@ namespace ProjectSneaky
             {
                 currentTarget = targetPos1;
             }
+        }
 
-            // Changing playerDetected to true if Player is inside fieldOfView
+
+        void PlayerDetection()  // Changing playerDetected to true if Player is inside fieldOfView
+        {
             if (player.playerPosition.X > fieldOfView.Top && player.playerPosition.X < fieldOfView.Bottom
                 && player.playerPosition.Y > fieldOfView.Left && player.playerPosition.Y < fieldOfView.Right)
                 playerDetected = true;
+        }
 
-
-            // starting to chase if player is detected else continue patrol
+        void PlayerChase()  // starting to chase if player is detected else continue patrol
+        {
             if (playerDetected)
                 currentTarget = player.playerPosition;
 
             move = currentTarget - guardPosition;
-            
-            if (move.Length()*speed > 1)
+
+            if (move.Length() * speed > 1)
                 move.Normalize();
-            
+
 
             move *= speed;
             guardPosition += move;
+        }
 
-            //changing facingDirection depending on the direction the guard is moving in.
+        void DirectionFacing()   //changing facingDirection depending on the direction the guard is moving in.
+        {
             if (move.Y < 0)                 // moving north
                 facingDirection = 0;
             else if (move.X > 0)            // moving east
@@ -110,10 +116,20 @@ namespace ProjectSneaky
             else if (facingDirection == 3)         //facing west
                 fieldOfView = new Rectangle((int)guardPosition.X - 1000, (int)guardPosition.Y - 300, 1000, 600);
 
-
-
         }
 
+
+        public void Update()
+        {
+            Patrol();
+            PlayerDetection();
+            PlayerChase();
+            DirectionFacing();
+
+
+
+
+        }  
 
         public void Draw(SpriteBatch spriteBatch)
         {
