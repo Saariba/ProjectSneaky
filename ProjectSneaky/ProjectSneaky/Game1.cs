@@ -52,7 +52,7 @@ namespace ProjectSneaky
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-            player = new Player(Content.Load<Texture2D>("Player/PixelGuy"), new Vector2(100, 100));
+            player = new Player(Content.Load<Texture2D>("template thomas"), new Vector2(100, 100));
             guard1 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(0, 40), new Vector2(600, 40), new Vector2(0, 40), 1.5f, 1, player);
             guard2 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(200, 80), new Vector2(800, 80), new Vector2(200, 80), 1.5f, 1, player);
 

@@ -44,7 +44,7 @@ namespace ProjectSneaky
         public void Update()
         {
             Movement();
-
+            System.Console.WriteLine(playerPosition); // Console Output playerPosition
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -91,8 +91,8 @@ namespace ProjectSneaky
 
         void PlayerDetection()  // Changing playerDetected to true if Player is inside fieldOfView
         {
-            if (player.playerPosition.X > fieldOfView.Top && player.playerPosition.X < fieldOfView.Bottom
-                && player.playerPosition.Y > fieldOfView.Left && player.playerPosition.Y < fieldOfView.Right)
+            if (player.playerPosition.Y > fieldOfView.Top && player.playerPosition.Y < fieldOfView.Bottom
+                && player.playerPosition.X > fieldOfView.Left && player.playerPosition.X < fieldOfView.Right)
                 playerDetected = true;
         }
 
