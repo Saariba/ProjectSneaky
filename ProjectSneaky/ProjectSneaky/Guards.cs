@@ -20,7 +20,7 @@ namespace ProjectSneaky
         Vector2 targetPos2;
         Vector2 currentTarget;
 
-        int facingDirection;        // 0 = North, 1 = East , 2 = South, 3 = West
+        String facingDirection;        // north,east,south,west
         Rectangle fieldOfView;
 
         Player player;
@@ -28,7 +28,7 @@ namespace ProjectSneaky
 
 
         public Guards (Texture2D _guardTexture, Vector2 _guardPosition,Vector2 _targetPos1,Vector2 _targetPos2,
-            float _speed,int _facingDirection, Player _player)
+            float _speed,String _facingDirection, Player _player)
         {
             guardTexture = _guardTexture;
             guardPosition = _guardPosition;
@@ -42,50 +42,57 @@ namespace ProjectSneaky
             currentTarget = _targetPos1;
 
             facingDirection = _facingDirection;
-            
+
             // fieldOfView is a 600x1000/1000x600 Rectangle starting 
             // at the Guard and going out in the direction he is facing.
-            if (_facingDirection == 0)              // facing north
-                fieldOfView = new Rectangle((int)_guardPosition.X - 300, (int)_guardPosition.Y - 1000, 600, 1000);
-            else if (_facingDirection == 1)         //facing east
-                fieldOfView = new Rectangle((int)_guardPosition.X, (int)_guardPosition.Y - 300, 1000, 600);
-            else if (_facingDirection == 2)         //facing south
-                fieldOfView = new Rectangle((int)_guardPosition.X -300, (int)_guardPosition.Y, 600, 1000);
-            else if (_facingDirection == 3)         //facing west
-                fieldOfView = new Rectangle((int)_guardPosition.X - 1000, (int)_guardPosition.Y - 300, 1000, 600);
-
-
-
+            switch (facingDirection)
+            {
+                case "north":     // facing north
+                    fieldOfView = new Rectangle((int)_guardPosition.X - 300, (int)_guardPosition.Y - 1000, 600, 1000);
+                    break;
+                case "east":     // facing east
+                    fieldOfView = new Rectangle((int)_guardPosition.X, (int)_guardPosition.Y - 300, 1000, 600);
+                    break;
+                case "south":     // facing south
+                    fieldOfView = new Rectangle((int)_guardPosition.X - 300, (int)_guardPosition.Y, 600, 1000);
+                    break;
+                case "west":     // facing west
+                    fieldOfView = new Rectangle((int)_guardPosition.X - 1000, (int)_guardPosition.Y - 300, 1000, 600);
+                    break;
+            }
         }
 
 
-        void Patrol() // Patrol
+        void Movement()
         {
-            if (playerDetected == false)
-            {
-                if (Vector2.Distance(guardPosition, targetPos1) < 0.0001)
-                {
-                    currentTarget = targetPos2;
-                }
-
-                if (Vector2.Distance(guardPosition, targetPos2) < 0.0001)
-                {
-                    currentTarget = targetPos1;
-                }
-            }
+            if (playerDetected)
+                PlayerChase();
             else
+                Patrol();
+        }
+
+        void Patrol() // Patroling between tragetPos1 and targetPos2
+        {
+            if (Vector2.Distance(guardPosition, targetPos1) < 0.0001)
             {
-                currentTarget = player.playerPosition;    //PlayerChase
+                currentTarget = targetPos2;
+            }
+
+            if (Vector2.Distance(guardPosition, targetPos2) < 0.0001)
+            {
+                currentTarget = targetPos1;
             }
 
             move = currentTarget - guardPosition;
 
-            if (move.Length() * speed > 1)
+            if (move.Length() > 1)
+            {
                 move.Normalize();
+                move *= speed;
+            }
 
-
-            move *= speed;
             guardPosition += move;
+
         }
 
 
@@ -96,50 +103,70 @@ namespace ProjectSneaky
                 playerDetected = true;
         }
 
-        void PlayerChase()  // starting to chase if player is detected else continue patrol
+        void PlayerChase()  // chasing player
         {
-            if (playerDetected)
-                currentTarget = player.playerPosition;
+            currentTarget = player.playerPosition;
 
             move = currentTarget - guardPosition;
 
-            if (move.Length() * speed > 1)
+            if (move.Length() > 1)
+            {
                 move.Normalize();
+                move *= speed;
+            }
 
-
-            move *= speed;
             guardPosition += move;
         }
 
-        void DirectionFacing()   //changing facingDirection depending on the direction the guard is moving in.
+        void DirectionFacing()   //changing facingDirection and fieldOfView depending on the direction the guard is moving in.
         {
+            
             if (move.Y < 0)                 // moving north
-                facingDirection = 0;
+                facingDirection = "north";
             else if (move.X > 0)            // moving east
-                facingDirection = 1;
+                facingDirection = "east";
             else if (move.Y > 0)            // moving south
-                facingDirection = 2;
+                facingDirection = "south";
             else if (move.X < 0)            // moving west
-                facingDirection = 3;
+                facingDirection = "west";
 
             // fieldOfView is a 600x1000/1000x600 Rectangle starting 
             // at the Guard and going out in the direction he is facing.
-            if (facingDirection == 0)              // facing north
-                fieldOfView = new Rectangle((int)guardPosition.X - 300, (int)guardPosition.Y - 1000, 600, 1000);
-            else if (facingDirection == 1)         //facing east
-                fieldOfView = new Rectangle((int)guardPosition.X, (int)guardPosition.Y - 300, 1000, 600);
-            else if (facingDirection == 2)         //facing south
-                fieldOfView = new Rectangle((int)guardPosition.X - 300, (int)guardPosition.Y, 600, 1000);
-            else if (facingDirection == 3)         //facing west
-                fieldOfView = new Rectangle((int)guardPosition.X - 1000, (int)guardPosition.Y - 300, 1000, 600);
 
+            switch (facingDirection)
+            {
+                case "north":     // facing north
+                    fieldOfView.X = (int)guardPosition.X - 300;
+                    fieldOfView.Y = (int)guardPosition.Y - 1000;
+                    fieldOfView.Width = 600;
+                    fieldOfView.Height = 1000;
+                    break;
+                case "east":     // facing east
+                    fieldOfView.X = (int)guardPosition.X;
+                    fieldOfView.Y = (int)guardPosition.Y - 300;
+                    fieldOfView.Width = 1000;
+                    fieldOfView.Height = 600;
+                    break;
+                case "south":     // facing south
+                    fieldOfView.X = (int)guardPosition.X - 300;
+                    fieldOfView.Y = (int)guardPosition.Y;
+                    fieldOfView.Width = 600;
+                    fieldOfView.Height = 1000;
+                    break;
+                case "west":     // facing west
+                    fieldOfView.X = (int)guardPosition.X - 1000;
+                    fieldOfView.Y = (int)guardPosition.Y - 300;
+                    fieldOfView.Width = 1000;
+                    fieldOfView.Height = 600;
+                    break;
+            }
         }
 
 
         public void Update()
         {
-            Patrol();
-            PlayerDetection();  
+            PlayerDetection();
+            Movement();  
             DirectionFacing();
         }  
 

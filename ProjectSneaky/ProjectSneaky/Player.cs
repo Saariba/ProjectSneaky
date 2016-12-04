@@ -13,7 +13,6 @@ namespace ProjectSneaky
     {
         Texture2D playerTexture;
         public Vector2 playerPosition;
-        Rectangle rectPlayer;
         
 
         public Player(Texture2D _playerTexture,Vector2 _playerPosition)

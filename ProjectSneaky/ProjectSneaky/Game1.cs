@@ -53,8 +53,8 @@ namespace ProjectSneaky
 
 
             player = new Player(Content.Load<Texture2D>("template thomas"), new Vector2(100, 100));
-            guard1 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(0, 40), new Vector2(600, 40), new Vector2(0, 40), 1.5f, 1, player);
-            guard2 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(200, 80), new Vector2(800, 80), new Vector2(200, 80), 1.5f, 1, player);
+            guard1 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(0, 40), new Vector2(600, 40), new Vector2(0, 40), 1.5f, "east", player);
+            guard2 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(200, 80), new Vector2(800, 80), new Vector2(200, 80), 1.5f, "east", player);
 
             // TODO: use this.Content to load your game content here
         }
@@ -99,6 +99,7 @@ namespace ProjectSneaky
             player.Draw(spriteBatch);
             guard1.Draw(spriteBatch);
             guard2.Draw(spriteBatch);
+
             spriteBatch.End();
 
             // TODO: Add your drawing code here
