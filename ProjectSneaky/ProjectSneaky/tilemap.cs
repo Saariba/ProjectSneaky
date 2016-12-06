@@ -60,9 +60,9 @@ namespace ProjectSneaky
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            for(int y = 0; y<tileMap.GetLength(1); y++)
+            for(int y = 0; y<tileMap.GetLength(1)/4; y++)
             {
-                for (int x = 0; x<tileMap.GetLength(0); x++)
+                for (int x = 0; x<tileMap.GetLength(0)/4; x++)
                 {
                     tileMap[x, y].Draw(spriteBatch);
                 }
