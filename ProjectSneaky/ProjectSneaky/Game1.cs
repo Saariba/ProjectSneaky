@@ -16,11 +16,7 @@ namespace ProjectSneaky
 
         
 
-        Guards guard1;
-        Guards guard2;
-        Player player;
-        private Tilemap tileMap;
-
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -36,10 +32,12 @@ namespace ProjectSneaky
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-           
+            GameStuff.Instance.player = new Player(Content.Load<Texture2D>("template thomas"), new Vector2(100, 100));
+            GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(0, 40), new Vector2(600, 40), new Vector2(0, 40), 1.5f, "east");
+            GameStuff.Instance.tileMap = new Tilemap(new Texture2D[] { Content.Load<Texture2D>("Floor"), Content.Load<Texture2D>("Wall") }, Content.Load<Texture2D>("bitMap"), 16);
+           GameStuff.Instance.guard2 =  new Guards(Content.Load<Texture2D>("Guard"), new Vector2(200, 80), new Vector2(800, 80), new Vector2(200, 80), 1.5f, "east");
             base.Initialize();
-            tileMap = new Tilemap(new Texture2D[] { Content.Load<Texture2D>("Floor"), Content.Load<Texture2D>("Wall") }, Content.Load<Texture2D>("bitMap"), 16);
+            GameStuff.Instance.camera = new Camera(graphics.GraphicsDevice.Viewport);
         }
 
         /// <summary>
@@ -50,12 +48,7 @@ namespace ProjectSneaky
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-
-            player = new Player(Content.Load<Texture2D>("template thomas"), new Vector2(100, 100));
-            guard1 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(0, 40), new Vector2(600, 40), new Vector2(0, 40), 1.5f, "east", player);
-            guard2 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(200, 80), new Vector2(800, 80), new Vector2(200, 80), 1.5f, "east", player);
-
+            
             // TODO: use this.Content to load your game content here
         }
 
@@ -77,10 +70,11 @@ namespace ProjectSneaky
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            tileMap.Update(gameTime);
-            player.Update();
-            guard1.Update();
-            guard2.Update();
+
+            GameStuff.Instance.tileMap.Update(gameTime);
+            GameStuff.Instance.player.Update();
+            GameStuff.Instance.guard1.Update();
+            GameStuff.Instance.guard2.Update();
         }
 
         /// <summary>
@@ -92,13 +86,13 @@ namespace ProjectSneaky
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(transformMatrix: GameStuff.Instance.camera.GetViewMatrix());
 
-            tileMap.Draw(spriteBatch);
+           GameStuff.Instance.tileMap.Draw(spriteBatch);
 
-            player.Draw(spriteBatch);
-            guard1.Draw(spriteBatch);
-            guard2.Draw(spriteBatch);
+            GameStuff.Instance.player.Draw(spriteBatch);
+            GameStuff.Instance.guard1.Draw(spriteBatch);
+            GameStuff.Instance.guard2.Draw(spriteBatch);
 
             spriteBatch.End();
 

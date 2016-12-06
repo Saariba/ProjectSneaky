@@ -28,14 +28,14 @@ namespace ProjectSneaky
 
 
         public Guards (Texture2D _guardTexture, Vector2 _guardPosition,Vector2 _targetPos1,Vector2 _targetPos2,
-            float _speed,String _facingDirection, Player _player)
+            float _speed,String _facingDirection)
         {
             guardTexture = _guardTexture;
             guardPosition = _guardPosition;
             speed = _speed;
 
             playerDetected = false;
-            player = _player;
+            player = GameStuff.Instance.player;
 
             targetPos1 = _targetPos1;
             targetPos2 = _targetPos2;

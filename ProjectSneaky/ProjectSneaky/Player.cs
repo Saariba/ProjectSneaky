@@ -27,16 +27,16 @@ namespace ProjectSneaky
             KeyboardState key = Keyboard.GetState();
 
             if (key.IsKeyDown(Keys.Up) || (key.IsKeyDown(Keys.W)))
-                playerPosition.Y -= 1;
+                playerPosition.Y -= 1*5;
 
             if (key.IsKeyDown(Keys.Down) || (key.IsKeyDown(Keys.S)))
-                playerPosition.Y += 1;
+                playerPosition.Y += 1*5;
 
             if (key.IsKeyDown(Keys.Left) || (key.IsKeyDown(Keys.A)))
-                playerPosition.X -= 1;
+                playerPosition.X -= 1*5;
 
             if (key.IsKeyDown(Keys.Right) || (key.IsKeyDown(Keys.D)))
-                playerPosition.X += 1;
+                playerPosition.X += 1*5;
         }
 
 
