@@ -10,7 +10,7 @@ namespace ProjectSneaky
 {
     class Camera
     {
-        Vector2 position, origin;
+         public Vector2 position, origin;
 
         public Camera(Viewport _viewport)
         {

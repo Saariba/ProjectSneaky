@@ -60,11 +60,12 @@ namespace ProjectSneaky
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            for(int y = 0; y<tileMap.GetLength(1); y++)
+            for(int y = (int) GameStuff.Instance.camera.position.Y - (int) GameStuff.Instance.camera.origin.Y - tileSize; y< (int) GameStuff.Instance.camera.position.Y + (int) GameStuff.Instance.camera.origin.Y + tileSize; y += tileSize)
             {
-                for (int x = 0; x<tileMap.GetLength(0); x++)
-                {
-                    tileMap[x, y].Draw(spriteBatch);
+                for (int x = (int)GameStuff.Instance.camera.position.X - (int)GameStuff.Instance.camera.origin.X - tileSize; x < (int)GameStuff.Instance.camera.position.X + (int)GameStuff.Instance.camera.origin.X + tileSize; x += tileSize)
+                {   
+                    if(x >=0 && y >= 0 && x<tileMap.GetLength(0)*tileSize && y<tileMap.GetLength(1)*tileSize)
+                    tileMap[x/tileSize, y/tileSize].Draw(spriteBatch);
                 }
             }
         }
