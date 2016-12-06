@@ -53,6 +53,18 @@ namespace ProjectSneaky
 
         }
 
+        public bool Walkable(Vector2 currentPosition)
+        {
+            try
+            {
+                return tileMap[(int)(currentPosition.X / tileSize), (int)(currentPosition.Y / tileSize)].Walkable();
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
+        }
+
         public void Update(GameTime gameTime)
         {
 

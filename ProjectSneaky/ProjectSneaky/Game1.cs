@@ -19,7 +19,7 @@ namespace ProjectSneaky
         Guards guard1;
         Guards guard2;
         Player player;
-        private Tilemap tileMap;
+        Tilemap tileMap;
 
         public Game1()
         {
@@ -39,7 +39,8 @@ namespace ProjectSneaky
 
            
             base.Initialize();
-            tileMap = new Tilemap(new Texture2D[] { Content.Load<Texture2D>("Floor"), Content.Load<Texture2D>("Wall") }, Content.Load<Texture2D>("bitMap"), 16);
+
+            GameStuff.Instance.tileMap = new Tilemap(new Texture2D[] { Content.Load<Texture2D>("Floor"), Content.Load<Texture2D>("Wall") }, Content.Load<Texture2D>("bitMap"), 16);
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace ProjectSneaky
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-            player = new Player(Content.Load<Texture2D>("template thomas"), new Vector2(100, 100));
+            player = new Player(Content.Load<Texture2D>("template thomas"), new Vector2(300, 300));
             guard1 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(0, 40), new Vector2(600, 40), new Vector2(0, 40), 1.5f, "east", player);
             guard2 = new Guards(Content.Load<Texture2D>("Guard"), new Vector2(200, 80), new Vector2(800, 80), new Vector2(200, 80), 1.5f, "east", player);
 
@@ -77,7 +78,7 @@ namespace ProjectSneaky
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            tileMap.Update(gameTime);
+            GameStuff.Instance.tileMap.Update(gameTime);
             player.Update();
             guard1.Update();
             guard2.Update();
@@ -94,7 +95,7 @@ namespace ProjectSneaky
 
             spriteBatch.Begin();
 
-            tileMap.Draw(spriteBatch);
+            GameStuff.Instance.tileMap.Draw(spriteBatch);
 
             player.Draw(spriteBatch);
             guard1.Draw(spriteBatch);

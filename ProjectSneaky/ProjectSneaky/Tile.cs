@@ -29,6 +29,11 @@ namespace ProjectSneaky
 
         }
 
+        public bool Walkable()
+        {
+            return (id == 0);
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position, Color.White);
