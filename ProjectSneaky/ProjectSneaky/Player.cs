@@ -51,8 +51,9 @@ namespace ProjectSneaky
             {
                 playerPosition += move;
             }
-            
 
+            move.X = 0;
+            move.Y = 0;
         }
 
 
