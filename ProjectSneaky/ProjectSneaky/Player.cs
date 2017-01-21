@@ -50,25 +50,25 @@ namespace ProjectSneaky
             KeyboardState key = Keyboard.GetState();
 
             if (key.IsKeyDown(Keys.Up) || (key.IsKeyDown(Keys.W)))
-                //  playerPosition.Y -= 1*5;
                 move.Y -= 1 * speed;
 
             if (key.IsKeyDown(Keys.Down) || (key.IsKeyDown(Keys.S)))
-                // playerPosition.Y += 1*5;
                 move.Y += 1 * speed;
 
             if (key.IsKeyDown(Keys.Left) || (key.IsKeyDown(Keys.A)))
-                //playerPosition.X -= 1*5;
                 move.X -= 1 * speed;
 
             if (key.IsKeyDown(Keys.Right) || (key.IsKeyDown(Keys.D)))
-                // playerPosition.X += 1*5;
                 move.X += 1 * speed;
 
             if (tileMap.Walkable(playerPosition + move)
-                && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width, 0))
-                && tileMap.Walkable(playerPosition + move + new Vector2(0, playerTexture.Height))
-                && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width, playerTexture.Height)))
+               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width / 2, 0))
+               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width, 0))
+               && tileMap.Walkable(playerPosition + move + new Vector2(0, playerTexture.Height))
+               && tileMap.Walkable(playerPosition + move + new Vector2(0, playerTexture.Height / 2))
+               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width, playerTexture.Height))
+               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width / 2, playerTexture.Height))
+               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width, playerTexture.Height / 2)))
             {
                 playerPosition += move;
             }
