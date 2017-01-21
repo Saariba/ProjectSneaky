@@ -33,7 +33,7 @@ namespace ProjectSneaky
             health -= damage;
             if(health <= 0)
             {
-                playerPosition = new Vector2(100, 100);
+                playerPosition = new Vector2(350, 350);
                 GameStuff.Instance.guard1.guardPosition = new Vector2(0, 40);
                 GameStuff.Instance.guard2.guardPosition = new Vector2(200, 80);
                 GameStuff.Instance.guard1.changeDetectionStatus(false);

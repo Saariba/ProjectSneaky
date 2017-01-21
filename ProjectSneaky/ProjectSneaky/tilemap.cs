@@ -11,8 +11,8 @@ namespace ProjectSneaky
 {
     class Tilemap
     {
-        Tile[,] tileMap;
-        int tileSize;
+        public Tile[,] tileMap;
+        public int tileSize;
         private Texture2D[] texture2D;
 
         public Tilemap(Texture2D[] textures, Texture2D bitMap, int _tileSize)

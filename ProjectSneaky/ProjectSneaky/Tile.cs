@@ -13,7 +13,7 @@ namespace ProjectSneaky
     {
         Vector2 position;
         Texture2D texture;
-        int id;
+        public int id;
 
 
         public Tile(Texture2D _texture, Vector2 _position, int _id)

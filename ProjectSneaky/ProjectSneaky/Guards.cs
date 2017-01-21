@@ -22,6 +22,12 @@ namespace ProjectSneaky
 
         String facingDirection;        // north,east,south,west
         Rectangle fieldOfView;
+        int fieldOfViewLongSideLength;
+        int fieldOfViewShortSideLength;
+
+        Vector2 guardToPLayer;
+        float guardToPLayerLength;
+        Vector2 temp;
 
         Player player;
         public bool playerDetected;
@@ -49,21 +55,27 @@ namespace ProjectSneaky
 
             facingDirection = _facingDirection;
 
-            // fieldOfView is a 600x1000/1000x600 Rectangle starting 
+
+            // fieldOfView is a 400x200/200x400 Rectangle starting 
             // at the Guard and going out in the direction he is facing.
+
+            fieldOfViewLongSideLength = 400;
+
+            fieldOfViewShortSideLength = 200;
+
             switch (facingDirection)
             {
                 case "north":     // facing north
-                    fieldOfView = new Rectangle((int)_guardPosition.X - 300, (int)_guardPosition.Y - 1000, 600, 1000);
+                    fieldOfView = new Rectangle((int)_guardPosition.X - fieldOfViewShortSideLength/2, (int)_guardPosition.Y - fieldOfViewLongSideLength, fieldOfViewShortSideLength, fieldOfViewLongSideLength);
                     break;
                 case "east":     // facing east
-                    fieldOfView = new Rectangle((int)_guardPosition.X, (int)_guardPosition.Y - 300, 1000, 600);
+                    fieldOfView = new Rectangle((int)_guardPosition.X, (int)_guardPosition.Y - fieldOfViewShortSideLength/2, fieldOfViewLongSideLength, fieldOfViewShortSideLength);
                     break;
                 case "south":     // facing south
-                    fieldOfView = new Rectangle((int)_guardPosition.X - 300, (int)_guardPosition.Y, 600, 1000);
+                    fieldOfView = new Rectangle((int)_guardPosition.X - fieldOfViewShortSideLength/2, (int)_guardPosition.Y, fieldOfViewShortSideLength, fieldOfViewLongSideLength);
                     break;
                 case "west":     // facing west
-                    fieldOfView = new Rectangle((int)_guardPosition.X - 1000, (int)_guardPosition.Y - 300, 1000, 600);
+                    fieldOfView = new Rectangle((int)_guardPosition.X - fieldOfViewLongSideLength, (int)_guardPosition.Y - fieldOfViewShortSideLength/2, fieldOfViewLongSideLength, fieldOfViewShortSideLength);
                     break;
             }
         }
@@ -102,11 +114,30 @@ namespace ProjectSneaky
         }
 
 
-        void PlayerDetection()  // Changing playerDetected to true if Player is inside fieldOfView
-        {
+        void PlayerDetection()  // Changing playerDetected to true if Player is inside fieldOfView and no wall between guard and player
+        {   
+
             if (player.playerPosition.Y > fieldOfView.Top && player.playerPosition.Y < fieldOfView.Bottom
                 && player.playerPosition.X > fieldOfView.Left && player.playerPosition.X < fieldOfView.Right)
+            {
+                guardToPLayer = player.playerPosition - guardPosition;
+
+                guardToPLayerLength = guardToPLayer.Length();
+
+                guardToPLayer.Normalize();
+
+                // check every tile on a line between guard and player and break if it's a wall
+                for(int i = 0; i < (int) guardToPLayerLength; i++)
+                {
+                    temp = guardPosition + (guardToPLayer * i);
+
+                    if (GameStuff.Instance.tileMap.tileMap[(int)temp.X / GameStuff.Instance.tileMap.tileSize, (int)temp.Y / GameStuff.Instance.tileMap.tileSize].id == 1)
+                        return;
+                }
+
                 playerDetected = true;
+
+            }
         }
 
         void PlayerChase()  // chasing player
@@ -142,28 +173,28 @@ namespace ProjectSneaky
             switch (facingDirection)
             {
                 case "north":     // facing north
-                    fieldOfView.X = (int)guardPosition.X - 300;
-                    fieldOfView.Y = (int)guardPosition.Y - 1000;
-                    fieldOfView.Width = 600;
-                    fieldOfView.Height = 1000;
+                    fieldOfView.X = (int)guardPosition.X - fieldOfViewShortSideLength/2;
+                    fieldOfView.Y = (int)guardPosition.Y - fieldOfViewLongSideLength;
+                    fieldOfView.Width = fieldOfViewShortSideLength;
+                    fieldOfView.Height = fieldOfViewLongSideLength;
                     break;
                 case "east":     // facing east
                     fieldOfView.X = (int)guardPosition.X;
-                    fieldOfView.Y = (int)guardPosition.Y - 300;
-                    fieldOfView.Width = 1000;
-                    fieldOfView.Height = 600;
+                    fieldOfView.Y = (int)guardPosition.Y - fieldOfViewShortSideLength/2;
+                    fieldOfView.Width = fieldOfViewLongSideLength;
+                    fieldOfView.Height = fieldOfViewShortSideLength;
                     break;
                 case "south":     // facing south
-                    fieldOfView.X = (int)guardPosition.X - 300;
+                    fieldOfView.X = (int)guardPosition.X - fieldOfViewShortSideLength/2;
                     fieldOfView.Y = (int)guardPosition.Y;
-                    fieldOfView.Width = 600;
-                    fieldOfView.Height = 1000;
+                    fieldOfView.Width = fieldOfViewShortSideLength;
+                    fieldOfView.Height = fieldOfViewLongSideLength;
                     break;
                 case "west":     // facing west
-                    fieldOfView.X = (int)guardPosition.X - 1000;
-                    fieldOfView.Y = (int)guardPosition.Y - 300;
-                    fieldOfView.Width = 1000;
-                    fieldOfView.Height = 600;
+                    fieldOfView.X = (int)guardPosition.X - fieldOfViewLongSideLength;
+                    fieldOfView.Y = (int)guardPosition.Y - fieldOfViewShortSideLength/2;
+                    fieldOfView.Width = fieldOfViewLongSideLength;
+                    fieldOfView.Height = fieldOfViewShortSideLength;
                     break;
             }
         }
@@ -178,7 +209,7 @@ namespace ProjectSneaky
             //Überprüft, ob Schaden applyt werden soll
             Vector2 distance = currentTarget - guardPosition;
 
-            if (distance.Length() <= 30)
+            if (guardPosition == player.playerPosition)
             {
                 player.ApplyDamage(5);
             }

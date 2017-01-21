@@ -32,10 +32,10 @@ namespace ProjectSneaky
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            GameStuff.Instance.player = new Player(Content.Load<Texture2D>("template thomas"), new Vector2(100, 100), 5);
-            GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("guardian"), new Vector2(0, 40), new Vector2(600, 40), new Vector2(0, 40), 1.5f, "east");
+            GameStuff.Instance.player = new Player(Content.Load<Texture2D>("Player/Player"), new Vector2(60, 330), 5);
+            GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(0, 40), new Vector2(600, 40), new Vector2(0, 40), 1.5f, "east");
             GameStuff.Instance.tileMap = new Tilemap(new Texture2D[] { Content.Load<Texture2D>("Wall"), Content.Load<Texture2D>("Floor") }, Content.Load<Texture2D>("bitMap"), 16);
-           GameStuff.Instance.guard2 =  new Guards(Content.Load<Texture2D>("guardian"), new Vector2(200, 80), new Vector2(800, 80), new Vector2(200, 80), 1.5f, "east");
+            GameStuff.Instance.guard2 =  new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(200, 80), new Vector2(800, 80), new Vector2(200, 80), 1.5f, "east");
             base.Initialize();
             GameStuff.Instance.camera = new Camera(graphics.GraphicsDevice.Viewport);
         }
