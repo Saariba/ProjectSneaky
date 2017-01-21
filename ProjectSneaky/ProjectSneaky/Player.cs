@@ -44,7 +44,7 @@ namespace ProjectSneaky
 
         }
 
-         void Movement()
+        
          void Movement(Tilemap tileMap)
         {
             KeyboardState key = Keyboard.GetState();
