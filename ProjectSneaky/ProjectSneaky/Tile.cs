@@ -26,7 +26,12 @@ namespace ProjectSneaky
 
         public void Update(GameTime gameTime)
         {
+            
+        }
 
+        public bool Walkable()
+        {
+            return (id == 0);
         }
 
         public void Draw(SpriteBatch spriteBatch)
