@@ -53,22 +53,39 @@ namespace ProjectSneaky
 
         }
 
+        public bool Walkable(Vector2 currentPosition)
+        {
+            return tileMap[(int)currentPosition.X / tileSize, (int)currentPosition.Y / tileSize].Walkable(); 
+        }
+
         public void Update(GameTime gameTime)
         {
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+         public void Draw(SpriteBatch spriteBatch)
+         {
+             for(int y = (int) GameStuff.Instance.camera.position.Y - (int) GameStuff.Instance.camera.origin.Y - tileSize; y< (int) GameStuff.Instance.camera.position.Y + (int) GameStuff.Instance.camera.origin.Y + tileSize; y += tileSize)
+             {
+                 for (int x = (int)GameStuff.Instance.camera.position.X - (int)GameStuff.Instance.camera.origin.X - tileSize; x < (int)GameStuff.Instance.camera.position.X + (int)GameStuff.Instance.camera.origin.X + tileSize; x += tileSize)
+                 {   
+                     if(x >=0 && y >= 0 && x<tileMap.GetLength(0)*tileSize && y<tileMap.GetLength(1)*tileSize)
+                     tileMap[x/tileSize, y/tileSize].Draw(spriteBatch);
+                 }
+             }
+         }
+
+       /* public void Draw(SpriteBatch spriteBatch)
         {
-            for(int y = (int) GameStuff.Instance.camera.position.Y - (int) GameStuff.Instance.camera.origin.Y - tileSize; y< (int) GameStuff.Instance.camera.position.Y + (int) GameStuff.Instance.camera.origin.Y + tileSize; y += tileSize)
+            for (int y = (int)GameStuff.Instance.camera.position.Y - (int)GameStuff.Instance.camera.origin.Y - tileSize; y < (int)GameStuff.Instance.camera.position.Y + (int)GameStuff.Instance.camera.origin.Y + tileSize; y++)
             {
-                for (int x = (int)GameStuff.Instance.camera.position.X - (int)GameStuff.Instance.camera.origin.X - tileSize; x < (int)GameStuff.Instance.camera.position.X + (int)GameStuff.Instance.camera.origin.X + tileSize; x += tileSize)
-                {   
-                    if(x >=0 && y >= 0 && x<tileMap.GetLength(0)*tileSize && y<tileMap.GetLength(1)*tileSize)
-                    tileMap[x/tileSize, y/tileSize].Draw(spriteBatch);
+                for (int x = (int)GameStuff.Instance.camera.position.X - (int)GameStuff.Instance.camera.origin.X - tileSize; x < (int)GameStuff.Instance.camera.position.X + (int)GameStuff.Instance.camera.origin.X + tileSize; x++)
+                {
+                    if (x >= 0 && y >= 0 && x < tileMap.GetLength(0) && y < tileMap.GetLength(1))
+                        tileMap[x , y].Draw(spriteBatch);
                 }
             }
-        }
+        }*/
 
 
 

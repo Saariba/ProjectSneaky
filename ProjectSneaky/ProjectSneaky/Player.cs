@@ -13,36 +13,52 @@ namespace ProjectSneaky
     {
         Texture2D playerTexture;
         public Vector2 playerPosition;
+        float speed;
+        Vector2 move;
         
 
-        public Player(Texture2D _playerTexture,Vector2 _playerPosition)
+        public Player(Texture2D _playerTexture,Vector2 _playerPosition, float _speed)
         {
             playerTexture = _playerTexture;
             playerPosition = _playerPosition;
-           
+            speed = _speed;
         }
 
-         void Movement()
+         void Movement(Tilemap tileMap)
         {
             KeyboardState key = Keyboard.GetState();
 
             if (key.IsKeyDown(Keys.Up) || (key.IsKeyDown(Keys.W)))
-                playerPosition.Y -= 1*5;
+                //  playerPosition.Y -= 1*5;
+                move.Y -= 1 * speed;
 
             if (key.IsKeyDown(Keys.Down) || (key.IsKeyDown(Keys.S)))
-                playerPosition.Y += 1*5;
+                // playerPosition.Y += 1*5;
+                move.Y += 1 * speed;
 
             if (key.IsKeyDown(Keys.Left) || (key.IsKeyDown(Keys.A)))
-                playerPosition.X -= 1*5;
+                //playerPosition.X -= 1*5;
+                move.X -= 1 * speed;
 
             if (key.IsKeyDown(Keys.Right) || (key.IsKeyDown(Keys.D)))
-                playerPosition.X += 1*5;
+                // playerPosition.X += 1*5;
+                move.X += 1 * speed;
+
+            if (tileMap.Walkable(playerPosition + move)
+                && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width, 0))
+                && tileMap.Walkable(playerPosition + move + new Vector2(0, playerTexture.Height))
+                && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width, playerTexture.Height)))
+            {
+                playerPosition += move;
+            }
+            
+
         }
 
 
-        public void Update()
+        public void Update(Tilemap tileMap)
         {
-            Movement();
+            Movement(tileMap);
             System.Console.WriteLine(playerPosition); // Console Output playerPosition
         }
 
