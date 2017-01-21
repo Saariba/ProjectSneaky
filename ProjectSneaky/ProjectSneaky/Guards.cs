@@ -12,7 +12,7 @@ namespace ProjectSneaky
     class Guards
     {
         Texture2D guardTexture;
-        Vector2 guardPosition;
+        public Vector2 guardPosition;
         float speed;
         Vector2 move;
 
@@ -24,7 +24,13 @@ namespace ProjectSneaky
         Rectangle fieldOfView;
 
         Player player;
-        bool playerDetected;
+        public bool playerDetected;
+
+        //lässt einen von außen den Guard auf den Start zurücksetzen
+        public bool changeDetectionStatus(bool status)
+        {
+            return playerDetected = status;
+        }
 
 
         public Guards (Texture2D _guardTexture, Vector2 _guardPosition,Vector2 _targetPos1,Vector2 _targetPos2,
@@ -166,9 +172,19 @@ namespace ProjectSneaky
         public void Update()
         {
             PlayerDetection();
-            Movement();  
+            Movement();
             DirectionFacing();
-        }  
+
+            //Überprüft, ob Schaden applyt werden soll
+            Vector2 distance = currentTarget - guardPosition;
+
+            if (distance.Length() <= 30)
+            {
+                player.ApplyDamage(5);
+            }
+
+        }
+           
 
         public void Draw(SpriteBatch spriteBatch)
         {
