@@ -36,6 +36,7 @@ namespace ProjectSneaky
             GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(0, 40), new Vector2(600, 40), new Vector2(0, 40), 1.5f, "east");
             GameStuff.Instance.tileMap = new Tilemap(new Texture2D[] { Content.Load<Texture2D>("Wall"), Content.Load<Texture2D>("Floor") }, Content.Load<Texture2D>("bitMap"), 16);
             GameStuff.Instance.guard2 =  new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(200, 80), new Vector2(800, 80), new Vector2(200, 80), 1.5f, "east");
+            //GameStuff.Instance.goal = new Goal(Content.Load<Texture2D>("DollarBill"), new Vector2(460, 435));
             base.Initialize();
             GameStuff.Instance.camera = new Camera(graphics.GraphicsDevice.Viewport);
         }
@@ -48,6 +49,8 @@ namespace ProjectSneaky
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            GameStuff.Instance.items.Add(new Goal(Content.Load<Texture2D>("DollarBill"), new Vector2(460, 435)));
             
             // TODO: use this.Content to load your game content here
         }
@@ -70,11 +73,24 @@ namespace ProjectSneaky
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            
             GameStuff.Instance.tileMap.Update(gameTime);
             GameStuff.Instance.player.Update(GameStuff.Instance.tileMap);
             GameStuff.Instance.guard1.Update();
             GameStuff.Instance.guard2.Update();
+            
+           
+            for (int i = GameStuff.Instance.items.Count - 1 ; i >= 0; i--)
+            {
+                if (GameStuff.Instance.items[i].alive)
+                    GameStuff.Instance.items[i].Update(gameTime);
+                else
+                {
+                    GameStuff.Instance.items.RemoveAt(i);
+                }
+            }
+
+
         }
 
         /// <summary>
@@ -88,11 +104,14 @@ namespace ProjectSneaky
 
             spriteBatch.Begin(transformMatrix: GameStuff.Instance.camera.GetViewMatrix());
 
-           GameStuff.Instance.tileMap.Draw(spriteBatch);
+            GameStuff.Instance.tileMap.Draw(spriteBatch);
 
             GameStuff.Instance.player.Draw(spriteBatch);
             GameStuff.Instance.guard1.Draw(spriteBatch);
             GameStuff.Instance.guard2.Draw(spriteBatch);
+
+            foreach (Item item in GameStuff.Instance.items)
+                item.Draw(spriteBatch);
 
             spriteBatch.End();
 

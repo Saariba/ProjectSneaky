@@ -44,7 +44,9 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameStuff.cs" />
+    <Compile Include="Goal.cs" />
     <Compile Include="Guards.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

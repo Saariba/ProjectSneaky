@@ -17,6 +17,7 @@ namespace ProjectSneaky
         float health;
         float speed;
         Vector2 move;
+        public Vector2 size;
         
 
         public Player(Texture2D _playerTexture,Vector2 _playerPosition, float _speed)
@@ -26,6 +27,7 @@ namespace ProjectSneaky
             health = 5;
            
             speed = _speed;
+            size = new Vector2(_playerTexture.Width, _playerTexture.Height);
         }
 
         public void ApplyDamage(float damage)
