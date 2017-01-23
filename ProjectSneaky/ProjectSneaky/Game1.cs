@@ -18,16 +18,13 @@ namespace ProjectSneaky
         KeyboardState keyboardStatePrev;
 
         SpriteFont fontPopup;
-        Color backgroudPopup;
-        Rectangle screenPopup;
-        Texture2D screenPopupTexture;
-        string stringPopup;
+        Color backgroudPopup; 
+
         Texture2D startScreen;
         Texture2D winScreen; 
-        Texture2D defeatScreen;
-        Vector2 startPos;
+        Texture2D defeatScreen;        
         Vector2 screenPos;
-        Vector2 endPos;
+        
 
         public Game1()
         {
@@ -52,17 +49,12 @@ namespace ProjectSneaky
             GameStuff.Instance.levelWon = false;
             GameStuff.Instance.items.Add(new Goal(Content.Load<Texture2D>("DollarBill"), new Vector2(20, 20)));
 
-            GameStuff.Instance.gameStateCurr = GameStuff.GameStates.Level1Start;
-            screenPopup = new Rectangle((int)GameStuff.Instance.player.playerPosition.X - 300, (int)GameStuff.Instance.player.playerPosition.Y - 150, 600, 300);
-            
+            GameStuff.Instance.gameStateCurr = GameStuff.GameStates.Level1Start;            
 
             GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(280, 30), new Vector2(280, 310), new Vector2(280, 30), 1.5f, "east");
             GameStuff.Instance.guard2 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(75, 40), new Vector2(630, 40), new Vector2(75, 40), 1.5f, "south");
             GameStuff.Instance.guard3 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(745, 40), new Vector2(745, 330), new Vector2(745, 40), 1.5f, "south");
 
-            screenPos = new Vector2(GameStuff.Instance.player.playerPosition.X, GameStuff.Instance.player.playerPosition.Y); //broken! NEED Fix!
-            startPos = new Vector2(-250, 170);
-            endPos = new Vector2(-300, -190);
             base.Initialize();
             
         }
@@ -78,8 +70,7 @@ namespace ProjectSneaky
             startScreen = Content.Load<Texture2D>("StartScreen");
             defeatScreen = Content.Load<Texture2D>("Caught");
             winScreen = Content.Load<Texture2D>("EndScreen");
-            fontPopup = Content.Load<SpriteFont>("Popups/SpriteFont Popups");
-            screenPopupTexture = Content.Load<Texture2D>("Popups/WhiteBox 30x30");            
+            fontPopup = Content.Load<SpriteFont>("Popups/SpriteFont Popups");                       
             
             // TODO: use this.Content to load your game content here
         }
@@ -104,6 +95,8 @@ namespace ProjectSneaky
                 Exit();
 
             keyboardState = Keyboard.GetState();
+
+                        
 
             // GameStates Transitions
             if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Start)
@@ -132,11 +125,12 @@ namespace ProjectSneaky
             }
 
             //Updates
-            screenPopup = new Rectangle((int)GameStuff.Instance.player.playerPosition.X - 300, (int)GameStuff.Instance.player.playerPosition.Y - 150, 600, 300);
 
             //Updates GameStates
             if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Start)
             {
+                screenPos.X = GameStuff.Instance.player.playerPosition.X - startScreen.Width / 2;
+                screenPos.Y = GameStuff.Instance.player.playerPosition.Y - startScreen.Height / 2;
                 backgroudPopup = Color.Yellow;
             }
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1)
@@ -178,11 +172,15 @@ namespace ProjectSneaky
             }
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Lost)
             {
+                screenPos.X = GameStuff.Instance.player.playerPosition.X - defeatScreen.Width / 2;
+                screenPos.Y = GameStuff.Instance.player.playerPosition.Y - defeatScreen.Height / 2;
                 backgroudPopup = Color.White;
                 
             }
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Won)
             {
+                screenPos.X = GameStuff.Instance.player.playerPosition.X - winScreen.Width / 2;
+                screenPos.Y = GameStuff.Instance.player.playerPosition.Y - winScreen.Height / 2;
                 backgroudPopup = Color.White;
                
             }
@@ -206,7 +204,7 @@ namespace ProjectSneaky
             //Draw GameStates
             if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Start)
             {
-                spriteBatch.Draw(startScreen, startPos, backgroudPopup);
+                spriteBatch.Draw(startScreen, screenPos, backgroudPopup);
             }
 
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1)
@@ -247,7 +245,7 @@ namespace ProjectSneaky
                 foreach (Item item in GameStuff.Instance.items)
                     item.Draw(spriteBatch);
 
-                spriteBatch.Draw(winScreen, endPos, backgroudPopup);
+                spriteBatch.Draw(winScreen, screenPos, backgroudPopup);
             }
 
             
