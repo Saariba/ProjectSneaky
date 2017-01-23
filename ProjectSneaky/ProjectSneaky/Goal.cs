@@ -13,12 +13,12 @@ namespace ProjectSneaky
     {
         public Goal(Texture2D _texture, Vector2 _position) : base(_texture, _position)
         {
-
+            
         }
 
         protected override void OnPlayerCollision()
         {
-            alive = false;
+            GameStuff.Instance.levelWon = true;
         }
 
         override public void Update(GameTime gTime)
