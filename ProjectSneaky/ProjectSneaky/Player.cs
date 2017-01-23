@@ -13,6 +13,7 @@ namespace ProjectSneaky
     {
         public Texture2D playerTexture;
         public Vector2 playerPosition;
+        public Rectangle playerHitbox;
 
         float health;
         float speed;
@@ -28,6 +29,7 @@ namespace ProjectSneaky
            
             speed = _speed;
             size = new Vector2(_playerTexture.Width, _playerTexture.Height);
+            playerHitbox = _playerTexture.Bounds;
         }
 
         public void ApplyDamage(float damage)
@@ -66,13 +68,14 @@ namespace ProjectSneaky
                 move.X += 1 * speed;
 
             if (tileMap.Walkable(playerPosition + move)
+               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width / 2, - playerTexture.Height / 2))
                && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width / 2, 0))
-               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width, 0))
-               && tileMap.Walkable(playerPosition + move + new Vector2(0, playerTexture.Height))
-               && tileMap.Walkable(playerPosition + move + new Vector2(0, playerTexture.Height / 2))
-               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width, playerTexture.Height))
-               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width / 2, playerTexture.Height))
-               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width, playerTexture.Height / 2)))
+               && tileMap.Walkable(playerPosition + move + new Vector2(playerTexture.Width / 2, playerTexture.Height / 2))
+               && tileMap.Walkable(playerPosition + move + new Vector2(- playerTexture.Width / 2, - playerTexture.Height / 2))
+               && tileMap.Walkable(playerPosition + move + new Vector2(- playerTexture.Width / 2, 0))
+               && tileMap.Walkable(playerPosition + move + new Vector2(- playerTexture.Width / 2, playerTexture.Height / 2))
+               && tileMap.Walkable(playerPosition + move + new Vector2(0, - playerTexture.Height / 2))
+               && tileMap.Walkable(playerPosition + move + new Vector2(0, playerTexture.Height / 2)))
             {
                 playerPosition += move;
             }
@@ -91,7 +94,7 @@ namespace ProjectSneaky
         public void Draw(SpriteBatch spriteBatch)
         {
             //Draw Texture
-            spriteBatch.Draw(playerTexture, playerPosition, Color.White);
+            spriteBatch.Draw(playerTexture, new Vector2 (playerPosition.X - playerTexture.Width/2, playerPosition.Y - playerTexture.Height / 2), Color.White);
         }
     }
 

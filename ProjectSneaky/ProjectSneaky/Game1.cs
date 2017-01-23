@@ -53,7 +53,7 @@ namespace ProjectSneaky
 
             GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(280, 30), new Vector2(280, 310), new Vector2(280, 30), 1.5f, "east");
             GameStuff.Instance.guard2 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(75, 40), new Vector2(630, 40), new Vector2(75, 40), 1.5f, "south");
-            GameStuff.Instance.guard3 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(745, 40), new Vector2(745, 340), new Vector2(745, 40), 1.5f, "south");
+            GameStuff.Instance.guard3 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(745, 40), new Vector2(745, 330), new Vector2(745, 40), 1.5f, "south");
 
             base.Initialize();
             

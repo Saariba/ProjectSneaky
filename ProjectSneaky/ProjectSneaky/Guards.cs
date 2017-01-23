@@ -56,26 +56,30 @@ namespace ProjectSneaky
             facingDirection = _facingDirection;
 
 
-            // fieldOfView is a 400x200/200x400 Rectangle starting 
+            // fieldOfView is a 400x400 Rectangle starting 
             // at the Guard and going out in the direction he is facing.
 
             fieldOfViewLongSideLength = 400;
 
-            fieldOfViewShortSideLength = 200;
+            fieldOfViewShortSideLength = 400;
 
             switch (facingDirection)
             {
                 case "north":     // facing north
-                    fieldOfView = new Rectangle((int)_guardPosition.X - fieldOfViewShortSideLength/2, (int)_guardPosition.Y - fieldOfViewLongSideLength, fieldOfViewShortSideLength, fieldOfViewLongSideLength);
+                    fieldOfView = new Rectangle((int)_guardPosition.X - fieldOfViewShortSideLength/2, (int)_guardPosition.Y - fieldOfViewLongSideLength,
+                        fieldOfViewShortSideLength, fieldOfViewLongSideLength);
                     break;
                 case "east":     // facing east
-                    fieldOfView = new Rectangle((int)_guardPosition.X, (int)_guardPosition.Y - fieldOfViewShortSideLength/2, fieldOfViewLongSideLength, fieldOfViewShortSideLength);
+                    fieldOfView = new Rectangle((int)_guardPosition.X, (int)_guardPosition.Y - fieldOfViewShortSideLength/2,
+                        fieldOfViewLongSideLength, fieldOfViewShortSideLength);
                     break;
                 case "south":     // facing south
-                    fieldOfView = new Rectangle((int)_guardPosition.X - fieldOfViewShortSideLength/2, (int)_guardPosition.Y, fieldOfViewShortSideLength, fieldOfViewLongSideLength);
+                    fieldOfView = new Rectangle((int)_guardPosition.X - fieldOfViewShortSideLength/2, (int)_guardPosition.Y,
+                        fieldOfViewShortSideLength, fieldOfViewLongSideLength);
                     break;
                 case "west":     // facing west
-                    fieldOfView = new Rectangle((int)_guardPosition.X - fieldOfViewLongSideLength, (int)_guardPosition.Y - fieldOfViewShortSideLength/2, fieldOfViewLongSideLength, fieldOfViewShortSideLength);
+                    fieldOfView = new Rectangle((int)_guardPosition.X - fieldOfViewLongSideLength, (int)_guardPosition.Y - fieldOfViewShortSideLength/2,
+                        fieldOfViewLongSideLength, fieldOfViewShortSideLength);
                     break;
             }
         }
@@ -117,8 +121,7 @@ namespace ProjectSneaky
         void PlayerDetection()  // Changing playerDetected to true if Player is inside fieldOfView and no wall between guard and player
         {   
 
-            if (player.playerPosition.Y > fieldOfView.Top && player.playerPosition.Y < fieldOfView.Bottom
-                && player.playerPosition.X > fieldOfView.Left && player.playerPosition.X < fieldOfView.Right)
+            if(fieldOfView.Contains(GameStuff.Instance.player.playerPosition))
             {
                 guardToPLayer = player.playerPosition - guardPosition;
 
