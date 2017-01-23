@@ -22,7 +22,12 @@ namespace ProjectSneaky
         Rectangle screenPopup;
         Texture2D screenPopupTexture;
         string stringPopup;
-
+        Texture2D startScreen;
+        Texture2D winScreen; 
+        Texture2D defeatScreen;
+        Vector2 startPos;
+        Vector2 screenPos;
+        Vector2 endPos;
 
         public Game1()
         {
@@ -49,12 +54,15 @@ namespace ProjectSneaky
 
             GameStuff.Instance.gameStateCurr = GameStuff.GameStates.Level1Start;
             screenPopup = new Rectangle((int)GameStuff.Instance.player.playerPosition.X - 300, (int)GameStuff.Instance.player.playerPosition.Y - 150, 600, 300);
-            stringPopup = "Get to the money without being seen!  Press Space to start";
+            
 
             GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(280, 30), new Vector2(280, 310), new Vector2(280, 30), 1.5f, "east");
             GameStuff.Instance.guard2 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(75, 40), new Vector2(630, 40), new Vector2(75, 40), 1.5f, "south");
             GameStuff.Instance.guard3 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(745, 40), new Vector2(745, 330), new Vector2(745, 40), 1.5f, "south");
 
+            screenPos = new Vector2(GameStuff.Instance.player.playerPosition.X, GameStuff.Instance.player.playerPosition.Y); //broken! NEED Fix!
+            startPos = new Vector2(-250, 170);
+            endPos = new Vector2(-300, -190);
             base.Initialize();
             
         }
@@ -67,7 +75,9 @@ namespace ProjectSneaky
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-                        
+            startScreen = Content.Load<Texture2D>("StartScreen");
+            defeatScreen = Content.Load<Texture2D>("Caught");
+            winScreen = Content.Load<Texture2D>("EndScreen");
             fontPopup = Content.Load<SpriteFont>("Popups/SpriteFont Popups");
             screenPopupTexture = Content.Load<Texture2D>("Popups/WhiteBox 30x30");            
             
@@ -168,13 +178,13 @@ namespace ProjectSneaky
             }
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Lost)
             {
-                backgroudPopup = Color.Red;
-                stringPopup = "You have been caught!   Press Space to try again";
+                backgroudPopup = Color.White;
+                
             }
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Won)
             {
-                backgroudPopup = Color.Green;
-                stringPopup = "You have won!   Press Space to restart";
+                backgroudPopup = Color.White;
+               
             }
 
             
@@ -196,9 +206,9 @@ namespace ProjectSneaky
             //Draw GameStates
             if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Start)
             {
-                spriteBatch.Draw(screenPopupTexture, screenPopup, backgroudPopup);
-                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X - 210, GameStuff.Instance.player.playerPosition.Y), Color.Black);
+                spriteBatch.Draw(startScreen, startPos, backgroudPopup);
             }
+
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1)
             {
                 GameStuff.Instance.tileMap.Draw(spriteBatch);
@@ -223,8 +233,7 @@ namespace ProjectSneaky
                 foreach (Item item in GameStuff.Instance.items)
                     item.Draw(spriteBatch);
 
-                spriteBatch.Draw(screenPopupTexture, screenPopup, backgroudPopup);
-                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X -190, GameStuff.Instance.player.playerPosition.Y), Color.Black);
+                spriteBatch.Draw(defeatScreen, screenPos, backgroudPopup);
             }
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Won)
             {
@@ -238,8 +247,7 @@ namespace ProjectSneaky
                 foreach (Item item in GameStuff.Instance.items)
                     item.Draw(spriteBatch);
 
-                spriteBatch.Draw(screenPopupTexture, screenPopup, backgroudPopup);
-                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X - 160, GameStuff.Instance.player.playerPosition.Y), Color.Black);
+                spriteBatch.Draw(winScreen, endPos, backgroudPopup);
             }
 
             
