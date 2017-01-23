@@ -197,7 +197,7 @@ namespace ProjectSneaky
             if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Start)
             {
                 spriteBatch.Draw(screenPopupTexture, screenPopup, backgroudPopup);
-                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X - 230, GameStuff.Instance.player.playerPosition.Y), Color.Black);
+                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X - 210, GameStuff.Instance.player.playerPosition.Y), Color.Black);
             }
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1)
             {
@@ -224,7 +224,7 @@ namespace ProjectSneaky
                     item.Draw(spriteBatch);
 
                 spriteBatch.Draw(screenPopupTexture, screenPopup, backgroudPopup);
-                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X , GameStuff.Instance.player.playerPosition.Y), Color.Black);
+                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X -190, GameStuff.Instance.player.playerPosition.Y), Color.Black);
             }
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Won)
             {
@@ -239,7 +239,7 @@ namespace ProjectSneaky
                     item.Draw(spriteBatch);
 
                 spriteBatch.Draw(screenPopupTexture, screenPopup, backgroudPopup);
-                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X - 230, GameStuff.Instance.player.playerPosition.Y), Color.Black);
+                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X - 160, GameStuff.Instance.player.playerPosition.Y), Color.Black);
             }
 
             
