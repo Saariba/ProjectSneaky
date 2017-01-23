@@ -13,6 +13,7 @@ namespace ProjectSneaky
         public Player player;
         public Guards guard1;
         public Guards guard2;
+        public Guards guard3;
         public Camera camera;
         public Goal goal;
         public List<Item> items = new List<Item>();

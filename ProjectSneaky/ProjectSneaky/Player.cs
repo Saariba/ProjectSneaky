@@ -35,11 +35,13 @@ namespace ProjectSneaky
             health -= damage;
             if(health <= 0)
             {
-                playerPosition = new Vector2(350, 350);
-                GameStuff.Instance.guard1.guardPosition = new Vector2(0, 40);
-                GameStuff.Instance.guard2.guardPosition = new Vector2(200, 80);
+                playerPosition = new Vector2(60, 410);
+                GameStuff.Instance.guard1.guardPosition = new Vector2(280, 30);
+                GameStuff.Instance.guard2.guardPosition = new Vector2(75, 40);
+                GameStuff.Instance.guard3.guardPosition = new Vector2(745, 40);
                 GameStuff.Instance.guard1.changeDetectionStatus(false);
                 GameStuff.Instance.guard2.changeDetectionStatus(false);
+                GameStuff.Instance.guard3.changeDetectionStatus(false);
                 //obiges resettet nach dem Tod die Spielerposition, die Guardposition, und, dass die Guards einen nicht weiter verfolgen
                 health = 5;
             }

@@ -32,11 +32,12 @@ namespace ProjectSneaky
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            GameStuff.Instance.player = new Player(Content.Load<Texture2D>("Player/Player"), new Vector2(60, 330), 5);
-            GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(0, 40), new Vector2(600, 40), new Vector2(0, 40), 1.5f, "east");
-            GameStuff.Instance.tileMap = new Tilemap(new Texture2D[] { Content.Load<Texture2D>("Wall"), Content.Load<Texture2D>("Floor") }, Content.Load<Texture2D>("bitMap"), 16);
-            GameStuff.Instance.guard2 =  new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(200, 80), new Vector2(800, 80), new Vector2(200, 80), 1.5f, "east");
-            //GameStuff.Instance.goal = new Goal(Content.Load<Texture2D>("DollarBill"), new Vector2(460, 435));
+            GameStuff.Instance.player = new Player(Content.Load<Texture2D>("Player/Player"), new Vector2(60, 410), 5);
+            GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(280, 30), new Vector2(280, 310), new Vector2(280, 30), 1.5f, "east");
+            GameStuff.Instance.tileMap = new Tilemap(new Texture2D[] { Content.Load<Texture2D>("Wall"), Content.Load<Texture2D>("Floor") }, Content.Load<Texture2D>("trialbitmap"), 16);
+            GameStuff.Instance.guard2 =  new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(75, 40), new Vector2(630, 40), new Vector2(75, 40), 1.5f, "south");
+            //GameStuff.Instance.goal = new Goal(Content.Load<Texture2D>("DollarBill"), new Vector2(20, 20));
+            GameStuff.Instance.guard3 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(745, 40), new Vector2(745, 340), new Vector2(745, 40), 1.5f, "south");
             base.Initialize();
             GameStuff.Instance.camera = new Camera(graphics.GraphicsDevice.Viewport);
         }
@@ -50,7 +51,7 @@ namespace ProjectSneaky
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            GameStuff.Instance.items.Add(new Goal(Content.Load<Texture2D>("DollarBill"), new Vector2(460, 435)));
+            GameStuff.Instance.items.Add(new Goal(Content.Load<Texture2D>("DollarBill"), new Vector2(20, 20)));
             
             // TODO: use this.Content to load your game content here
         }
@@ -78,6 +79,7 @@ namespace ProjectSneaky
             GameStuff.Instance.player.Update(GameStuff.Instance.tileMap);
             GameStuff.Instance.guard1.Update();
             GameStuff.Instance.guard2.Update();
+            GameStuff.Instance.guard3.Update();
             
            
             for (int i = GameStuff.Instance.items.Count - 1 ; i >= 0; i--)
@@ -109,6 +111,7 @@ namespace ProjectSneaky
             GameStuff.Instance.player.Draw(spriteBatch);
             GameStuff.Instance.guard1.Draw(spriteBatch);
             GameStuff.Instance.guard2.Draw(spriteBatch);
+            GameStuff.Instance.guard3.Draw(spriteBatch);
 
             foreach (Item item in GameStuff.Instance.items)
                 item.Draw(spriteBatch);
