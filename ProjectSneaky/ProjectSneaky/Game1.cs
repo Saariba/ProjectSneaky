@@ -49,7 +49,7 @@ namespace ProjectSneaky
 
             GameStuff.Instance.gameStateCurr = GameStuff.GameStates.Level1Start;
             screenPopup = new Rectangle((int)GameStuff.Instance.player.playerPosition.X - 300, (int)GameStuff.Instance.player.playerPosition.Y - 150, 600, 300);
-            stringPopup = "Get to the money without getting seen!   Press Space to start";
+            stringPopup = "Get to the money without being seen!  Press Space to start";
 
             GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(280, 30), new Vector2(280, 310), new Vector2(280, 30), 1.5f, "east");
             GameStuff.Instance.guard2 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(75, 40), new Vector2(630, 40), new Vector2(75, 40), 1.5f, "south");
@@ -224,7 +224,7 @@ namespace ProjectSneaky
                     item.Draw(spriteBatch);
 
                 spriteBatch.Draw(screenPopupTexture, screenPopup, backgroudPopup);
-                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X - 230, GameStuff.Instance.player.playerPosition.Y), Color.Black);
+                spriteBatch.DrawString(fontPopup, stringPopup, new Vector2(GameStuff.Instance.player.playerPosition.X , GameStuff.Instance.player.playerPosition.Y), Color.Black);
             }
             else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Won)
             {
