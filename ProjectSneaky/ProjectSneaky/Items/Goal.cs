@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ProjectSneaky
+namespace ProjectSneaky.Items
 {
     class Goal : Item
     {
@@ -18,10 +18,10 @@ namespace ProjectSneaky
 
         protected override void OnPlayerCollision()
         {
-            GameStuff.Instance.levelWon = true;
+            GameStuff.Instance.StageWon = true;
         }
 
-        override public void Update(GameTime gTime)
+        override public void Update()
         {
             Rectangle me = new Rectangle(position.ToPoint(), texture.Bounds.Size);
             Rectangle player = new Rectangle(GameStuff.Instance.player.playerPosition.ToPoint(),

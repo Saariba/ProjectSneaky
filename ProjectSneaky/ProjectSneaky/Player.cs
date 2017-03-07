@@ -13,44 +13,34 @@ namespace ProjectSneaky
     {
         public Texture2D playerTexture;
         public Vector2 playerPosition;
+        private Vector2 stageStartPosition;
+        private Vector2 currStartPosition;
         public Rectangle playerHitbox;
-
-        float health;
+        
         float speed;
         Vector2 move;
         public Vector2 size;
         
+        // Getters
+        public Vector2 getCurrStartPosition() { return currStartPosition; }
+
+        public Vector2 getStageStartPosition() { return stageStartPosition; }
+
+        // Setters
+        public void setCurrStartPosition(Vector2 _currStartPosition) { currStartPosition = _currStartPosition; }
 
         public Player(Texture2D _playerTexture,Vector2 _playerPosition, float _speed)
         {
             playerTexture = _playerTexture;
             playerPosition = _playerPosition;
-            health = 5;
-           
-            speed = _speed;
+            currStartPosition = _playerPosition;
+            stageStartPosition = _playerPosition;
+
+        speed = _speed;
             size = new Vector2(_playerTexture.Width, _playerTexture.Height);
-            playerHitbox = _playerTexture.Bounds;
+            playerHitbox = new Rectangle((int)_playerPosition.X - _playerTexture.Width / 2, (int)_playerPosition.Y - _playerTexture.Height / 2, _playerTexture.Width, _playerTexture.Height);
         }
 
-        public void ApplyDamage(float damage)
-        {
-            health -= damage;
-            if(health <= 0)
-            {
-                playerPosition = new Vector2(60, 410);
-                GameStuff.Instance.guard1.guardPosition = new Vector2(280, 30);
-                GameStuff.Instance.guard2.guardPosition = new Vector2(75, 40);
-                GameStuff.Instance.guard3.guardPosition = new Vector2(745, 40);
-                GameStuff.Instance.guard1.changeDetectionStatus(false);
-                GameStuff.Instance.guard2.changeDetectionStatus(false);
-                GameStuff.Instance.guard3.changeDetectionStatus(false);
-                //obiges resettet nach dem Tod die Spielerposition, die Guardposition, und, dass die Guards einen nicht weiter verfolgen
-                health = 5;
-            }
-
-        }
-
-        
          void Movement(Tilemap tileMap)
         {
             KeyboardState key = Keyboard.GetState();
@@ -88,6 +78,10 @@ namespace ProjectSneaky
         public void Update(Tilemap tileMap)
         {
             Movement(tileMap);
+
+            playerHitbox.X = (int)playerPosition.X - playerTexture.Width / 2;
+            playerHitbox.Y = (int)playerPosition.Y - playerTexture.Height / 2;
+
             System.Console.WriteLine(playerPosition); // Console Output playerPosition
         }
 

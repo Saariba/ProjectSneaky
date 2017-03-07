@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ProjectSneaky.Items;
+using ProjectSneaky.Levels;
 
 namespace ProjectSneaky
 {
@@ -16,8 +18,7 @@ namespace ProjectSneaky
 
         KeyboardState keyboardState;
         KeyboardState keyboardStatePrev;
-
-        SpriteFont fontPopup;
+                
         Color backgroudPopup; 
 
         Texture2D startScreen;
@@ -43,18 +44,87 @@ namespace ProjectSneaky
             // TODO: Add your initialization logic here
             GameStuff.Instance.camera = new Camera(graphics.GraphicsDevice.Viewport);            
 
-            GameStuff.Instance.player = new Player(Content.Load<Texture2D>("Player/Player"), new Vector2(60, 410), 5);
-            GameStuff.Instance.tileMap = new Tilemap(new Texture2D[] { Content.Load<Texture2D>("Wall"), Content.Load<Texture2D>("Floor") }, Content.Load<Texture2D>("trialbitmap"), 16);
+            GameStuff.Instance.player = new Player(Content.Load<Texture2D>("Player/Player"), new Vector2(15 * 16, 7 * 16), 5);
+            
+            //LevelTextures
+                //Default
+            GameStuff.Instance.defaultLevelTextures = new Texture2D[] { Content.Load<Texture2D>("Wall"), Content.Load<Texture2D>("Floor") };
+            GameStuff.Instance.defaultDoorTextures = new Texture2D[] { Content.Load<Texture2D>("Items/DoorPlaceholderHorizontal"),
+                Content.Load<Texture2D>("Items/DoorPlaceholderVertical") };
 
-            GameStuff.Instance.levelWon = false;
-            GameStuff.Instance.items.Add(new Goal(Content.Load<Texture2D>("DollarBill"), new Vector2(20, 20)));
+            // MuseumTest
+            
+                // Levels
+            GameStuff.Instance.museumEntryLevel = new MuseumRoom(Content.Load<Texture2D>("BitMaps/MuseumTestEntry"), 
+                GameStuff.GameStates.museumLeftRoomLowerDoorStart, GameStuff.GameStates.museumRightRoomLowerDoorStart);
+            GameStuff.Instance.museumLeftRoomLevel = new MuseumRoom(Content.Load<Texture2D>("BitMaps/MuseumTestLeftRoom"),
+                GameStuff.GameStates.museumTopRoomLeftDoorStart, GameStuff.GameStates.museumEntryLeftDoorStart);
+            GameStuff.Instance.museumRightRoomLevel = new MuseumRoom(Content.Load<Texture2D>("BitMaps/MuseumTestRightRoom"),
+                GameStuff.GameStates.museumTopRoomRightDoorStart, GameStuff.GameStates.museumEntryRightDoorStart);
+            GameStuff.Instance.museumTopRoomLevel = new MuseumRoom(Content.Load<Texture2D>("BitMaps/MuseumTestTopRoom"),
+                GameStuff.GameStates.museumLeftRoomUpperDoorStart, GameStuff.GameStates.museumRightRoomUpperDoorStart);
 
-            GameStuff.Instance.gameStateCurr = GameStuff.GameStates.Level1Start;            
+                // Door Linking
+            GameStuff.Instance.museumEntryLevel.getMuseumRoomDoors()[0].LinkVerticalDoors(
+                GameStuff.Instance.museumLeftRoomLevel.getMuseumRoomDoors()[1],
+                GameStuff.Instance.museumEntryLevel.getMuseumRoomDoors()[0]);
+            GameStuff.Instance.museumEntryLevel.getMuseumRoomDoors()[1].LinkVerticalDoors(
+                GameStuff.Instance.museumEntryLevel.getMuseumRoomDoors()[1],
+                GameStuff.Instance.museumRightRoomLevel.getMuseumRoomDoors()[1]);
+            GameStuff.Instance.museumLeftRoomLevel.getMuseumRoomDoors()[0].LinkVerticalDoors(
+                GameStuff.Instance.museumLeftRoomLevel.getMuseumRoomDoors()[0],
+                GameStuff.Instance.museumTopRoomLevel.getMuseumRoomDoors()[0]);
+            GameStuff.Instance.museumTopRoomLevel.getMuseumRoomDoors()[1].LinkVerticalDoors(
+                GameStuff.Instance.museumTopRoomLevel.getMuseumRoomDoors()[1],
+                GameStuff.Instance.museumRightRoomLevel.getMuseumRoomDoors()[0]);
 
-            GameStuff.Instance.guard1 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(280, 30), new Vector2(280, 310), new Vector2(280, 30), 1.5f, "east");
-            GameStuff.Instance.guard2 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(75, 40), new Vector2(630, 40), new Vector2(75, 40), 1.5f, "south");
-            GameStuff.Instance.guard3 = new Guards(Content.Load<Texture2D>("Guards/guard"), new Vector2(745, 40), new Vector2(745, 330), new Vector2(745, 40), 1.5f, "south");
+                // Adding Guards to Levels
+            GameStuff.Instance.museumEntryLevel.addGuard(
+                new Guards(Content.Load<Texture2D>("Guards/Guard"), GameStuff.Instance.museumEntryLevel.getTileMap().getVariousPositions()[0],
+                GameStuff.Instance.museumEntryLevel.getTileMap().getVariousPositions()[0], GameStuff.Instance.museumEntryLevel.getTileMap().getVariousPositions()[1],
+                3, "east"));
+            GameStuff.Instance.museumEntryLevel.addGuard(
+                new Guards(Content.Load<Texture2D>("Guards/Guard"), GameStuff.Instance.museumEntryLevel.getTileMap().getVariousPositions()[3],
+                GameStuff.Instance.museumEntryLevel.getTileMap().getVariousPositions()[3], GameStuff.Instance.museumEntryLevel.getTileMap().getVariousPositions()[2],
+                3, "west"));
 
+            GameStuff.Instance.museumLeftRoomLevel.addGuard(
+                new Guards(Content.Load<Texture2D>("Guards/Guard"), GameStuff.Instance.museumLeftRoomLevel.getTileMap().getVariousPositions()[0],
+                GameStuff.Instance.museumLeftRoomLevel.getTileMap().getVariousPositions()[0], GameStuff.Instance.museumLeftRoomLevel.getTileMap().getVariousPositions()[2],
+                3, "south"));
+            GameStuff.Instance.museumLeftRoomLevel.addGuard(
+                new Guards(Content.Load<Texture2D>("Guards/Guard"), GameStuff.Instance.museumLeftRoomLevel.getTileMap().getVariousPositions()[3],
+                GameStuff.Instance.museumLeftRoomLevel.getTileMap().getVariousPositions()[3], GameStuff.Instance.museumLeftRoomLevel.getTileMap().getVariousPositions()[1],
+                3, "north"));
+
+            GameStuff.Instance.museumRightRoomLevel.addGuard(
+                new Guards(Content.Load<Texture2D>("Guards/Guard"), GameStuff.Instance.museumRightRoomLevel.getTileMap().getVariousPositions()[0],
+                GameStuff.Instance.museumRightRoomLevel.getTileMap().getVariousPositions()[0], GameStuff.Instance.museumRightRoomLevel.getTileMap().getVariousPositions()[2],
+                3, "south"));
+            GameStuff.Instance.museumRightRoomLevel.addGuard(
+                new Guards(Content.Load<Texture2D>("Guards/Guard"), GameStuff.Instance.museumRightRoomLevel.getTileMap().getVariousPositions()[3],
+                GameStuff.Instance.museumRightRoomLevel.getTileMap().getVariousPositions()[3], GameStuff.Instance.museumRightRoomLevel.getTileMap().getVariousPositions()[1],
+                3, "north"));
+
+            GameStuff.Instance.museumTopRoomLevel.addGuard(
+                new Guards(Content.Load<Texture2D>("Guards/Guard"), GameStuff.Instance.museumTopRoomLevel.getTileMap().getVariousPositions()[0],
+                GameStuff.Instance.museumTopRoomLevel.getTileMap().getVariousPositions()[0], GameStuff.Instance.museumTopRoomLevel.getTileMap().getVariousPositions()[1],
+                3, "east"));
+            GameStuff.Instance.museumTopRoomLevel.addGuard(
+                new Guards(Content.Load<Texture2D>("Guards/Guard"), GameStuff.Instance.museumTopRoomLevel.getTileMap().getVariousPositions()[3],
+                GameStuff.Instance.museumTopRoomLevel.getTileMap().getVariousPositions()[3], GameStuff.Instance.museumTopRoomLevel.getTileMap().getVariousPositions()[2],
+                3, "west"));
+
+                // Adding Goal to Level
+            GameStuff.Instance.museumTopRoomLevel.addItem(new Goal(Content.Load<Texture2D>("Items/DollarBill"),
+                GameStuff.Instance.museumTopRoomLevel.getTileMap().getVariousPositions()[4]));
+
+
+            GameStuff.Instance.StageWon = false;
+
+            GameStuff.Instance.gameStateCurr = GameStuff.GameStates.stage1Start;            
+
+            
             base.Initialize();
             
         }
@@ -67,10 +137,10 @@ namespace ProjectSneaky
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
             startScreen = Content.Load<Texture2D>("StartScreen");
             defeatScreen = Content.Load<Texture2D>("Caught");
-            winScreen = Content.Load<Texture2D>("EndScreen");
-            fontPopup = Content.Load<SpriteFont>("Popups/SpriteFont Popups");                       
+            winScreen = Content.Load<Texture2D>("EndScreen");                     
             
             // TODO: use this.Content to load your game content here
         }
@@ -96,95 +166,242 @@ namespace ProjectSneaky
 
             keyboardState = Keyboard.GetState();
 
-                        
 
-            // GameStates Transitions
-            if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Start)
-            {
-                if (keyboardState.IsKeyDown(Keys.Space) && keyboardStatePrev.IsKeyDown(Keys.Space))
-                    GameStuff.Instance.gameStateCurr = GameStuff.GameStates.Level1; GameStuff.Instance.gameStatePrev = GameStuff.GameStates.Level1Start;
-            }
-            else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1)
-            {
-                if (GameStuff.Instance.guard1.playerDetected || GameStuff.Instance.guard2.playerDetected || GameStuff.Instance.guard3.playerDetected)
-                    GameStuff.Instance.gameStateCurr = GameStuff.GameStates.Level1Lost; GameStuff.Instance.gameStatePrev = GameStuff.GameStates.Level1;
 
-                if (GameStuff.Instance.levelWon)
-                    GameStuff.Instance.gameStateCurr = GameStuff.GameStates.Level1Won; GameStuff.Instance.gameStatePrev = GameStuff.GameStates.Level1;
-
-            }
-            else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Lost)
-            {
-                if (keyboardState.IsKeyDown(Keys.Space) && keyboardStatePrev.IsKeyDown(Keys.Space))
-                    GameStuff.Instance.gameStateCurr = GameStuff.GameStates.Level1; GameStuff.Instance.gameStatePrev = GameStuff.GameStates.Level1Lost;
-            }
-            else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Won)
-            {
-                if (keyboardState.IsKeyDown(Keys.Space) && keyboardStatePrev.IsKeyDown(Keys.Space))
-                    GameStuff.Instance.gameStateCurr = GameStuff.GameStates.Level1; GameStuff.Instance.gameStatePrev = GameStuff.GameStates.Level1Won;
-            }
-
+            
+            
             //Updates
 
             //Updates GameStates
-            if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Start)
+            switch (GameStuff.Instance.gameStateCurr)
             {
-                screenPos.X = GameStuff.Instance.player.playerPosition.X - startScreen.Width / 2;
-                screenPos.Y = GameStuff.Instance.player.playerPosition.Y - startScreen.Height / 2;
-                backgroudPopup = Color.Yellow;
+                case GameStuff.GameStates.stage1Start:
+
+                    screenPos.X = GameStuff.Instance.player.playerPosition.X - startScreen.Width / 2;
+                    screenPos.Y = GameStuff.Instance.player.playerPosition.Y - startScreen.Height / 2;
+                    backgroudPopup = Color.Yellow;
+                    break;
+
+                case GameStuff.GameStates.stage1Lost:
+
+                    screenPos.X = GameStuff.Instance.player.playerPosition.X - defeatScreen.Width / 2;
+                    screenPos.Y = GameStuff.Instance.player.playerPosition.Y - defeatScreen.Height / 2;
+                    backgroudPopup = Color.White;
+                    break;
+
+                case GameStuff.GameStates.stage1Won:
+
+                    screenPos.X = GameStuff.Instance.player.playerPosition.X - winScreen.Width / 2;
+                    screenPos.Y = GameStuff.Instance.player.playerPosition.Y - winScreen.Height / 2;
+                    backgroudPopup = Color.White;
+                    break;
+
+                case GameStuff.GameStates.museumEntryLeftDoorStart:
+                case GameStuff.GameStates.museumEntryRightDoorStart:
+                case GameStuff.GameStates.museumEntryStandardStart:
+
+                    GameStuff.Instance.player.Update(GameStuff.Instance.museumEntryLevel.getTileMap());
+                    GameStuff.Instance.museumEntryLevel.Update();
+                    break;
+
+                case GameStuff.GameStates.museumLeftRoomLowerDoorStart:
+                case GameStuff.GameStates.museumLeftRoomUpperDoorStart:
+
+                    GameStuff.Instance.player.Update(GameStuff.Instance.museumLeftRoomLevel.getTileMap());
+                    GameStuff.Instance.museumLeftRoomLevel.Update();
+                    break;
+
+                case GameStuff.GameStates.museumRightRoomLowerDoorStart:
+                case GameStuff.GameStates.museumRightRoomUpperDoorStart:
+
+                    GameStuff.Instance.player.Update(GameStuff.Instance.museumRightRoomLevel.getTileMap());
+                    GameStuff.Instance.museumRightRoomLevel.Update();
+                    break;
+
+                case GameStuff.GameStates.museumTopRoomLeftDoorStart:
+                case GameStuff.GameStates.museumTopRoomRightDoorStart:
+
+                    GameStuff.Instance.player.Update(GameStuff.Instance.museumTopRoomLevel.getTileMap());
+                    GameStuff.Instance.museumTopRoomLevel.Update();
+                    break;
+
             }
-            else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1)
-            {   
-                // Reset
-                if (keyboardState.IsKeyDown(Keys.Space) && keyboardStatePrev.IsKeyDown(Keys.Space))                 
-                {
-                    GameStuff.Instance.player.playerPosition = new Vector2(60, 410);
+            
+            // GameStates Transitions
 
-                    GameStuff.Instance.guard1.guardPosition = new Vector2(280, 30);
-                    GameStuff.Instance.guard2.guardPosition = new Vector2(75, 40);
-                    GameStuff.Instance.guard3.guardPosition = new Vector2(745, 40);
+            switch (GameStuff.Instance.gameStateCurr)
+            {
+                case GameStuff.GameStates.stage1Start:
 
-                    GameStuff.Instance.guard1.changeDetectionStatus(false);
-                    GameStuff.Instance.guard2.changeDetectionStatus(false);
-                    GameStuff.Instance.guard3.changeDetectionStatus(false);
-
-                    GameStuff.Instance.levelWon = false;             
-                }
-
-                GameStuff.Instance.tileMap.Update(gameTime);
-
-                GameStuff.Instance.player.Update(GameStuff.Instance.tileMap);
-
-                GameStuff.Instance.guard1.Update();
-                GameStuff.Instance.guard2.Update();
-                GameStuff.Instance.guard3.Update();
-
-
-                for (int i = GameStuff.Instance.items.Count - 1; i >= 0; i--)
-                {
-                    if (GameStuff.Instance.items[i].alive)
-                        GameStuff.Instance.items[i].Update(gameTime);
-                    else
-                    {
-                        GameStuff.Instance.items.RemoveAt(i);
+                        // Start
+                    if (keyboardState.IsKeyDown(Keys.Space) && keyboardStatePrev.IsKeyDown(Keys.Space))
+                    {                        
+                        GameStuff.Instance.gameStateCurr = GameStuff.GameStates.museumEntryStandardStart;
+                        GameStuff.Instance.gameStatePrev = GameStuff.GameStates.stage1Start;                        
                     }
-                }
-            }
-            else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Lost)
-            {
-                screenPos.X = GameStuff.Instance.player.playerPosition.X - defeatScreen.Width / 2;
-                screenPos.Y = GameStuff.Instance.player.playerPosition.Y - defeatScreen.Height / 2;
-                backgroudPopup = Color.White;
-                
-            }
-            else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Won)
-            {
-                screenPos.X = GameStuff.Instance.player.playerPosition.X - winScreen.Width / 2;
-                screenPos.Y = GameStuff.Instance.player.playerPosition.Y - winScreen.Height / 2;
-                backgroudPopup = Color.White;
-               
-            }
+                        break;
 
+                case GameStuff.GameStates.stage1Lost:
+
+                        // Restart Room
+                    if (keyboardState.IsKeyDown(Keys.Space) && keyboardStatePrev.IsKeyDown(Keys.Space))
+                    {
+                        GameStuff.Instance.gameStateCurr = GameStuff.Instance.gameStatePrev;
+                        GameStuff.Instance.gameStatePrev = GameStuff.GameStates.stage1Lost;
+
+                            // Resetting Positions
+                        GameStuff.Instance.player.playerPosition = GameStuff.Instance.player.getCurrStartPosition();
+
+                        foreach(MuseumRoom museumRoom in GameStuff.Instance.museumRoomLevels)
+                        {
+                            foreach(Guards guard in museumRoom.getMuseumRoomGuards())
+                            {
+                                guard.guardPosition = guard.getGuardStartPosition();
+                            }
+                        }
+                    }
+                    break;
+
+                case GameStuff.GameStates.stage1Won:
+
+                        // Restart Stage
+                    if (keyboardState.IsKeyDown(Keys.Space) && keyboardStatePrev.IsKeyDown(Keys.Space))
+                    {
+                        GameStuff.Instance.gameStateCurr = GameStuff.GameStates.stage1Start;
+                        GameStuff.Instance.gameStatePrev = GameStuff.GameStates.stage1Won;
+
+                            // Resetting Positions
+                        GameStuff.Instance.player.playerPosition = GameStuff.Instance.player.getStageStartPosition();
+
+                        foreach (MuseumRoom museumRoom in GameStuff.Instance.museumRoomLevels)
+                        {
+                            foreach (Guards guard in museumRoom.getMuseumRoomGuards())
+                            {
+                                guard.guardPosition = guard.getGuardStartPosition();
+                            }
+                        }
+
+                        GameStuff.Instance.StageWon = false;
+                    }
+                    break;
+
+                case GameStuff.GameStates.museumEntryLeftDoorStart:
+                case GameStuff.GameStates.museumEntryRightDoorStart:
+                case GameStuff.GameStates.museumEntryStandardStart:
+
+                        // Transition through Door
+                    foreach (Door door in GameStuff.Instance.museumEntryLevel.getMuseumRoomDoors())
+                    {
+                        if (door.getPlayerCollision())
+                        {
+                            door.RoomTransition();
+                            GameStuff.Instance.player.setCurrStartPosition(
+                                GameStuff.Instance.player.playerPosition);
+                            door.setPlayerCollision(false);
+                        }
+                    }
+
+                        // Transition throug getting caught
+                    foreach(Guards guard in GameStuff.Instance.museumEntryLevel.getMuseumRoomGuards())
+                    {
+                        if (guard.playerDetected)
+                        {
+                            GameStuff.Instance.gameStatePrev = GameStuff.Instance.gameStateCurr;
+                            GameStuff.Instance.gameStateCurr = GameStuff.GameStates.stage1Lost;
+                            guard.playerDetected = false;
+                        }
+                    }
+                    break;
+
+                case GameStuff.GameStates.museumLeftRoomLowerDoorStart:
+                case GameStuff.GameStates.museumLeftRoomUpperDoorStart:
+
+                        //Transition through Door
+                    foreach (Door door in GameStuff.Instance.museumLeftRoomLevel.getMuseumRoomDoors())
+                    {
+                        if (door.getPlayerCollision())
+                        {
+                            door.RoomTransition();
+                            GameStuff.Instance.player.setCurrStartPosition(
+                                GameStuff.Instance.player.playerPosition);
+                            door.setPlayerCollision(false);
+                        }
+                    }
+
+                        // Transition throug getting caught
+                    foreach (Guards guard in GameStuff.Instance.museumLeftRoomLevel.getMuseumRoomGuards())
+                    {
+                        if (guard.playerDetected)
+                        {
+                            GameStuff.Instance.gameStatePrev = GameStuff.Instance.gameStateCurr;
+                            GameStuff.Instance.gameStateCurr = GameStuff.GameStates.stage1Lost;
+                            guard.playerDetected = false;
+                        }
+                    }
+                    break;
+
+                case GameStuff.GameStates.museumRightRoomLowerDoorStart:
+                case GameStuff.GameStates.museumRightRoomUpperDoorStart:
+
+                        //Transition through Door
+                    foreach (Door door in GameStuff.Instance.museumRightRoomLevel.getMuseumRoomDoors())
+                    {
+                        if (door.getPlayerCollision())
+                        {
+                            door.RoomTransition();
+                            GameStuff.Instance.player.setCurrStartPosition(
+                                GameStuff.Instance.player.playerPosition);
+                            door.setPlayerCollision(false);
+                        }
+                    }
+
+                        // Transition throug getting caught
+                    foreach (Guards guard in GameStuff.Instance.museumRightRoomLevel.getMuseumRoomGuards())
+                    {
+                        if (guard.playerDetected)
+                        {
+                            GameStuff.Instance.gameStatePrev = GameStuff.Instance.gameStateCurr;
+                            GameStuff.Instance.gameStateCurr = GameStuff.GameStates.stage1Lost;
+                            guard.playerDetected = false;
+                        }
+                    }
+                    break;
+
+                case GameStuff.GameStates.museumTopRoomLeftDoorStart:
+                case GameStuff.GameStates.museumTopRoomRightDoorStart:
+
+                        //Transition through Door
+                    foreach (Door door in GameStuff.Instance.museumTopRoomLevel.getMuseumRoomDoors())
+                    {
+                        if (door.getPlayerCollision())
+                        {
+                            door.RoomTransition();
+                            GameStuff.Instance.player.setCurrStartPosition(
+                                GameStuff.Instance.player.playerPosition);
+                            door.setPlayerCollision(false);
+                        }
+                    }
+
+                        // Transition throug getting caught
+                    foreach (Guards guard in GameStuff.Instance.museumTopRoomLevel.getMuseumRoomGuards())
+                    {
+                        if (guard.playerDetected)
+                        {
+                            GameStuff.Instance.gameStatePrev = GameStuff.Instance.gameStateCurr;
+                            GameStuff.Instance.gameStateCurr = GameStuff.GameStates.stage1Lost;
+                            guard.playerDetected = false;
+                        }
+                    }
+
+                    // Transition through reaching Goal
+                    if (GameStuff.Instance.StageWon)
+                    {
+                        GameStuff.Instance.gameStatePrev = GameStuff.Instance.gameStateCurr;
+                        GameStuff.Instance.gameStateCurr = GameStuff.GameStates.stage1Won;
+                    }
+                    break;
+
+            }
             
 
             keyboardStatePrev = keyboardState;
@@ -202,53 +419,57 @@ namespace ProjectSneaky
             spriteBatch.Begin(transformMatrix: GameStuff.Instance.camera.GetViewMatrix());
 
             //Draw GameStates
-            if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Start)
+
+            switch (GameStuff.Instance.gameStateCurr)
             {
-                spriteBatch.Draw(startScreen, screenPos, backgroudPopup);
+                case GameStuff.GameStates.stage1Start:
+
+                    spriteBatch.Draw(startScreen, screenPos, backgroudPopup);
+                    break;
+
+                case GameStuff.GameStates.stage1Lost:
+
+                    spriteBatch.Draw(defeatScreen, screenPos, backgroudPopup);
+                    break;
+
+                case GameStuff.GameStates.stage1Won:
+
+                    spriteBatch.Draw(winScreen, screenPos, backgroudPopup);
+                    break;
+
+                case GameStuff.GameStates.museumEntryLeftDoorStart:
+                case GameStuff.GameStates.museumEntryRightDoorStart:
+                case GameStuff.GameStates.museumEntryStandardStart:
+
+                    GameStuff.Instance.museumEntryLevel.Draw(spriteBatch);
+                    GameStuff.Instance.player.Draw(spriteBatch);
+                    break;
+
+                case GameStuff.GameStates.museumLeftRoomLowerDoorStart:
+                case GameStuff.GameStates.museumLeftRoomUpperDoorStart:
+
+                    GameStuff.Instance.museumLeftRoomLevel.Draw(spriteBatch);
+                    GameStuff.Instance.player.Draw(spriteBatch);
+                    break;
+
+                case GameStuff.GameStates.museumRightRoomLowerDoorStart:
+                case GameStuff.GameStates.museumRightRoomUpperDoorStart:
+
+                    GameStuff.Instance.museumRightRoomLevel.Draw(spriteBatch);
+                    GameStuff.Instance.player.Draw(spriteBatch);
+                    break;
+
+                case GameStuff.GameStates.museumTopRoomLeftDoorStart:
+                case GameStuff.GameStates.museumTopRoomRightDoorStart:
+
+                    GameStuff.Instance.museumTopRoomLevel.Draw(spriteBatch);
+                    GameStuff.Instance.player.Draw(spriteBatch);
+                    break;
+
             }
+                              
 
-            else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1)
-            {
-                GameStuff.Instance.tileMap.Draw(spriteBatch);
 
-                GameStuff.Instance.player.Draw(spriteBatch);
-                GameStuff.Instance.guard1.Draw(spriteBatch);
-                GameStuff.Instance.guard2.Draw(spriteBatch);
-                GameStuff.Instance.guard3.Draw(spriteBatch);
-
-                foreach (Item item in GameStuff.Instance.items)
-                    item.Draw(spriteBatch);
-            }
-            else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Lost)
-            {
-                GameStuff.Instance.tileMap.Draw(spriteBatch);
-
-                GameStuff.Instance.player.Draw(spriteBatch);
-                GameStuff.Instance.guard1.Draw(spriteBatch);
-                GameStuff.Instance.guard2.Draw(spriteBatch);
-                GameStuff.Instance.guard3.Draw(spriteBatch);
-
-                foreach (Item item in GameStuff.Instance.items)
-                    item.Draw(spriteBatch);
-
-                spriteBatch.Draw(defeatScreen, screenPos, backgroudPopup);
-            }
-            else if (GameStuff.Instance.gameStateCurr == GameStuff.GameStates.Level1Won)
-            {
-                GameStuff.Instance.tileMap.Draw(spriteBatch);
-
-                GameStuff.Instance.player.Draw(spriteBatch);
-                GameStuff.Instance.guard1.Draw(spriteBatch);
-                GameStuff.Instance.guard2.Draw(spriteBatch);
-                GameStuff.Instance.guard3.Draw(spriteBatch);
-
-                foreach (Item item in GameStuff.Instance.items)
-                    item.Draw(spriteBatch);
-
-                spriteBatch.Draw(winScreen, screenPos, backgroudPopup);
-            }
-
-            
 
             spriteBatch.End();
 

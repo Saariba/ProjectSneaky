@@ -13,6 +13,7 @@ namespace ProjectSneaky
     {
         Texture2D guardTexture;
         public Vector2 guardPosition;
+        private Vector2 guardStartPosition;
         float speed;
         Vector2 move;
 
@@ -32,18 +33,22 @@ namespace ProjectSneaky
         Player player;
         public bool playerDetected;
 
+        //Getters
+        public Vector2 getGuardStartPosition() { return guardStartPosition; }
+
         //lässt einen von außen den Guard auf den Start zurücksetzen
         public bool changeDetectionStatus(bool status)
         {
             return playerDetected = status;
         }
 
-
+        // Constructor
         public Guards (Texture2D _guardTexture, Vector2 _guardPosition,Vector2 _targetPos1,Vector2 _targetPos2,
             float _speed,String _facingDirection)
         {
             guardTexture = _guardTexture;
             guardPosition = _guardPosition;
+            guardStartPosition = _guardPosition;
             speed = _speed;
 
             playerDetected = false;
@@ -118,7 +123,7 @@ namespace ProjectSneaky
         }
 
 
-        void PlayerDetection()  // Changing playerDetected to true if Player is inside fieldOfView and no wall between guard and player
+        void PlayerDetection(Tilemap _tileMap)  // Changing playerDetected to true if Player is inside fieldOfView and no wall between guard and player
         {   
 
             if(fieldOfView.Contains(GameStuff.Instance.player.playerPosition))
@@ -134,7 +139,7 @@ namespace ProjectSneaky
                 {
                     temp = guardPosition + (guardToPLayer * i);
 
-                    if (GameStuff.Instance.tileMap.tileMap[(int)temp.X / GameStuff.Instance.tileMap.tileSize, (int)temp.Y / GameStuff.Instance.tileMap.tileSize].id == 1)
+                    if (_tileMap.tileMap[(int)temp.X / _tileMap.tileSize, (int)temp.Y / _tileMap.tileSize].id == 1)
                         return;
                 }
 
@@ -203,20 +208,11 @@ namespace ProjectSneaky
         }
 
 
-        public void Update()
+        public void Update(Tilemap _tileMap)
         {
-            PlayerDetection();
+            PlayerDetection(_tileMap);
             Movement();
             DirectionFacing();
-
-            //Überprüft, ob Schaden applyt werden soll
-            Vector2 distance = currentTarget - guardPosition;
-
-            if (guardPosition == player.playerPosition)
-            {
-                player.ApplyDamage(5);
-            }
-
         }
            
 

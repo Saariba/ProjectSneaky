@@ -7,40 +7,41 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace ProjectSneaky
+namespace ProjectSneaky.Items
 {
     abstract class Item
     {
-        public Vector2 position;
-        public Texture2D texture;
-        public bool alive;
+        protected Vector2 position;
+        protected Texture2D texture;
+        protected bool alive;
+        protected Rectangle meRect;
 
         public Item (Texture2D _texture, Vector2 _position)
         {
             position = _position;
             texture = _texture;
             alive = true;
+            meRect = new Rectangle((int)_position.X - _texture.Width / 2, (int)_position.Y - _texture.Height / 2, _texture.Width, _texture.Height);
         }
 
+        public bool getAlive() { return alive; }
+
+        public Vector2 getPosition() { return position; }
+       
         protected virtual void OnPlayerCollision()
         {
-            alive = false;
         }
         
 
-        public virtual void Update(GameTime gTime)
+        public virtual void Update()
         {
-            Rectangle me = new Rectangle(position.ToPoint(), texture.Bounds.Size);
-            Rectangle player = new Rectangle(GameStuff.Instance.player.playerPosition.ToPoint(),
-                GameStuff.Instance.player.size.ToPoint());
-
-            if (me.Intersects(player) && alive)
+            if (meRect.Intersects(GameStuff.Instance.player.playerHitbox) && alive)
                 OnPlayerCollision();
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, meRect, Color.White);
         }
 
     }
