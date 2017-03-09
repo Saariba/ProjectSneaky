@@ -12,51 +12,64 @@ namespace ProjectSneaky.Items
     class Door : Item
     {
         private GameStuff.GameStates destinationGamestate;
-
-        private bool playerCollision;
-
+        
         private Door destinationDoor;
 
         private string doorLinkSide;
 
+
         // Getters
         public GameStuff.GameStates getDestinationGamestate() { return destinationGamestate; }
-
-        public bool getPlayerCollision() { return playerCollision; }        
 
         public Door getDestinationDoor() { return destinationDoor; }
 
         public string getDoorLinkSide() { return doorLinkSide; }
 
-        // Setters
-        public void setPlayerCollision(bool _playerCollision) { playerCollision = _playerCollision; }
 
         // Constructors
         public Door (Texture2D _texture, Vector2 _position, GameStuff.GameStates _destinationGameState) : base(_texture, _position)
         {
             destinationGamestate = _destinationGameState;
-            playerCollision = false;
+            collidingWithPlayer = false;
         }
 
         //links Door to the destination Door, needs to be done in game initialization for every door pairs manualy
-        public void LinkVerticalDoors(Door westDoor, Door eastDoor)
+        public void LinkNorthDoor(Door toTheSouth)
         {
-            eastDoor.destinationDoor = westDoor;
-            eastDoor.doorLinkSide = "east";
+            this.destinationDoor = toTheSouth;
+            this.doorLinkSide = "north";
 
-            westDoor.destinationDoor = eastDoor;
-            westDoor.doorLinkSide = "west";
+            toTheSouth.destinationDoor = this;
+            toTheSouth.doorLinkSide = "south";
         }
 
-        public void LinkHorizontalDoors(Door northDoor, Door southDoor)
+        public void LinkEastDoor(Door toTheWest)
         {
-            northDoor.destinationDoor = southDoor;
-            northDoor.doorLinkSide = "north";
+            this.destinationDoor = toTheWest;
+            this.doorLinkSide = "east";
 
-            southDoor.destinationDoor = northDoor;
-            southDoor.doorLinkSide = "south";
+            toTheWest.destinationDoor = this;
+            toTheWest.doorLinkSide = "west";
         }
 
+        public void LinkSouthDoor(Door toTheNorth)
+        {
+            this.destinationDoor = toTheNorth;
+            this.doorLinkSide = "south";
+
+            toTheNorth.destinationDoor = this;
+            toTheNorth.doorLinkSide = "north";
+        }
+        public void LinkWestDoor(Door toTheEast)
+        {
+            this.destinationDoor = toTheEast;
+            this.doorLinkSide = "west";
+
+            toTheEast.destinationDoor = this;
+            toTheEast.doorLinkSide = "east";
+        }
+        
+        //Used to transition room through doors
         public void RoomTransition()
         {
             GameStuff.Instance.gameStatePrev = GameStuff.Instance.gameStateCurr;
@@ -82,14 +95,15 @@ namespace ProjectSneaky.Items
                     break;
 
             }
+
+            GameStuff.Instance.player.setCurrStartPosition(
+                                GameStuff.Instance.player.playerPosition);
         }
 
         protected override void OnPlayerCollision()
         {
-            if (!playerCollision)
-            {
-                playerCollision = true;
-            }
+            base.OnPlayerCollision();
+            
         }
 
     }

@@ -64,21 +64,13 @@ namespace ProjectSneaky
             GameStuff.Instance.museumTopRoomLevel = new MuseumRoom(Content.Load<Texture2D>("BitMaps/MuseumTestTopRoom"),
                 GameStuff.GameStates.museumLeftRoomUpperDoorStart, GameStuff.GameStates.museumRightRoomUpperDoorStart);
 
-                // Door Linking
-            GameStuff.Instance.museumEntryLevel.getMuseumRoomDoors()[0].LinkVerticalDoors(
-                GameStuff.Instance.museumLeftRoomLevel.getMuseumRoomDoors()[1],
-                GameStuff.Instance.museumEntryLevel.getMuseumRoomDoors()[0]);
-            GameStuff.Instance.museumEntryLevel.getMuseumRoomDoors()[1].LinkVerticalDoors(
-                GameStuff.Instance.museumEntryLevel.getMuseumRoomDoors()[1],
-                GameStuff.Instance.museumRightRoomLevel.getMuseumRoomDoors()[1]);
-            GameStuff.Instance.museumLeftRoomLevel.getMuseumRoomDoors()[0].LinkVerticalDoors(
-                GameStuff.Instance.museumLeftRoomLevel.getMuseumRoomDoors()[0],
-                GameStuff.Instance.museumTopRoomLevel.getMuseumRoomDoors()[0]);
-            GameStuff.Instance.museumTopRoomLevel.getMuseumRoomDoors()[1].LinkVerticalDoors(
-                GameStuff.Instance.museumTopRoomLevel.getMuseumRoomDoors()[1],
-                GameStuff.Instance.museumRightRoomLevel.getMuseumRoomDoors()[0]);
+            // Door Linking
+            GameStuff.Instance.museumEntryLevel.getLevelDoors()[0].LinkEastDoor(GameStuff.Instance.museumLeftRoomLevel.getLevelDoors()[1]);
+            GameStuff.Instance.museumLeftRoomLevel.getLevelDoors()[0].LinkWestDoor(GameStuff.Instance.museumTopRoomLevel.getLevelDoors()[0]);
+            GameStuff.Instance.museumTopRoomLevel.getLevelDoors()[1].LinkWestDoor(GameStuff.Instance.museumRightRoomLevel.getLevelDoors()[0]);
+            GameStuff.Instance.museumRightRoomLevel.getLevelDoors()[1].LinkEastDoor(GameStuff.Instance.museumEntryLevel.getLevelDoors()[1]);
 
-                // Adding Guards to Levels
+            // Adding Guards to Levels
             GameStuff.Instance.museumEntryLevel.addGuard(
                 new Guards(Content.Load<Texture2D>("Guards/Guard"), GameStuff.Instance.museumEntryLevel.getTileMap().getVariousPositions()[0],
                 GameStuff.Instance.museumEntryLevel.getTileMap().getVariousPositions()[0], GameStuff.Instance.museumEntryLevel.getTileMap().getVariousPositions()[1],
@@ -254,7 +246,7 @@ namespace ProjectSneaky
 
                         foreach(MuseumRoom museumRoom in GameStuff.Instance.museumRoomLevels)
                         {
-                            foreach(Guards guard in museumRoom.getMuseumRoomGuards())
+                            foreach(Guards guard in museumRoom.getLevelGuards())
                             {
                                 guard.guardPosition = guard.getGuardStartPosition();
                             }
@@ -275,7 +267,7 @@ namespace ProjectSneaky
 
                         foreach (MuseumRoom museumRoom in GameStuff.Instance.museumRoomLevels)
                         {
-                            foreach (Guards guard in museumRoom.getMuseumRoomGuards())
+                            foreach (Guards guard in museumRoom.getLevelGuards())
                             {
                                 guard.guardPosition = guard.getGuardStartPosition();
                             }
@@ -290,19 +282,17 @@ namespace ProjectSneaky
                 case GameStuff.GameStates.museumEntryStandardStart:
 
                         // Transition through Door
-                    foreach (Door door in GameStuff.Instance.museumEntryLevel.getMuseumRoomDoors())
+                    foreach (Door door in GameStuff.Instance.museumEntryLevel.getLevelDoors())
                     {
                         if (door.getPlayerCollision())
                         {
-                            door.RoomTransition();
-                            GameStuff.Instance.player.setCurrStartPosition(
-                                GameStuff.Instance.player.playerPosition);
+                            door.RoomTransition();                            
                             door.setPlayerCollision(false);
                         }
                     }
 
                         // Transition throug getting caught
-                    foreach(Guards guard in GameStuff.Instance.museumEntryLevel.getMuseumRoomGuards())
+                    foreach(Guards guard in GameStuff.Instance.museumEntryLevel.getLevelGuards())
                     {
                         if (guard.playerDetected)
                         {
@@ -317,19 +307,17 @@ namespace ProjectSneaky
                 case GameStuff.GameStates.museumLeftRoomUpperDoorStart:
 
                         //Transition through Door
-                    foreach (Door door in GameStuff.Instance.museumLeftRoomLevel.getMuseumRoomDoors())
+                    foreach (Door door in GameStuff.Instance.museumLeftRoomLevel.getLevelDoors())
                     {
                         if (door.getPlayerCollision())
                         {
                             door.RoomTransition();
-                            GameStuff.Instance.player.setCurrStartPosition(
-                                GameStuff.Instance.player.playerPosition);
                             door.setPlayerCollision(false);
                         }
                     }
 
                         // Transition throug getting caught
-                    foreach (Guards guard in GameStuff.Instance.museumLeftRoomLevel.getMuseumRoomGuards())
+                    foreach (Guards guard in GameStuff.Instance.museumLeftRoomLevel.getLevelGuards())
                     {
                         if (guard.playerDetected)
                         {
@@ -344,19 +332,17 @@ namespace ProjectSneaky
                 case GameStuff.GameStates.museumRightRoomUpperDoorStart:
 
                         //Transition through Door
-                    foreach (Door door in GameStuff.Instance.museumRightRoomLevel.getMuseumRoomDoors())
+                    foreach (Door door in GameStuff.Instance.museumRightRoomLevel.getLevelDoors())
                     {
                         if (door.getPlayerCollision())
                         {
                             door.RoomTransition();
-                            GameStuff.Instance.player.setCurrStartPosition(
-                                GameStuff.Instance.player.playerPosition);
                             door.setPlayerCollision(false);
                         }
                     }
 
                         // Transition throug getting caught
-                    foreach (Guards guard in GameStuff.Instance.museumRightRoomLevel.getMuseumRoomGuards())
+                    foreach (Guards guard in GameStuff.Instance.museumRightRoomLevel.getLevelGuards())
                     {
                         if (guard.playerDetected)
                         {
@@ -371,19 +357,17 @@ namespace ProjectSneaky
                 case GameStuff.GameStates.museumTopRoomRightDoorStart:
 
                         //Transition through Door
-                    foreach (Door door in GameStuff.Instance.museumTopRoomLevel.getMuseumRoomDoors())
+                    foreach (Door door in GameStuff.Instance.museumTopRoomLevel.getLevelDoors())
                     {
                         if (door.getPlayerCollision())
                         {
                             door.RoomTransition();
-                            GameStuff.Instance.player.setCurrStartPosition(
-                                GameStuff.Instance.player.playerPosition);
                             door.setPlayerCollision(false);
                         }
                     }
 
                         // Transition throug getting caught
-                    foreach (Guards guard in GameStuff.Instance.museumTopRoomLevel.getMuseumRoomGuards())
+                    foreach (Guards guard in GameStuff.Instance.museumTopRoomLevel.getLevelGuards())
                     {
                         if (guard.playerDetected)
                         {

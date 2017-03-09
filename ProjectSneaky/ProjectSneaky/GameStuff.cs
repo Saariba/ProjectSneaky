@@ -23,7 +23,7 @@ namespace ProjectSneaky
         public MuseumRoom museumLeftRoomLevel;
         public MuseumRoom museumRightRoomLevel;
         public MuseumRoom museumTopRoomLevel;
-
+       
             // Standard Textures
         public Texture2D[] defaultLevelTextures;   // Index 0 = Floor, Index 1 = Wall
         public Texture2D[] defaultDoorTextures;    // Index 0 = Horizontal, Index 1 = Vertical
@@ -31,9 +31,7 @@ namespace ProjectSneaky
         public Player player;
         
         public Camera camera;
-
-        public Goal goal;
-        
+                
         public bool StageWon;
         
 

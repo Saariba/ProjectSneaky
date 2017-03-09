@@ -12,10 +12,24 @@ namespace ProjectSneaky.Items
     abstract class Item
     {
         protected Vector2 position;
+
         protected Texture2D texture;
+
         protected bool alive;
+
         protected Rectangle meRect;
 
+        protected bool collidingWithPlayer;
+
+
+        // Getters
+        public bool getPlayerCollision() { return collidingWithPlayer; }
+
+        // Setters
+        public void setPlayerCollision(bool _playerCollision) { collidingWithPlayer = _playerCollision; }
+
+
+        // Constructor
         public Item (Texture2D _texture, Vector2 _position)
         {
             position = _position;
@@ -30,6 +44,10 @@ namespace ProjectSneaky.Items
        
         protected virtual void OnPlayerCollision()
         {
+            if (!collidingWithPlayer)
+            {
+                collidingWithPlayer = true;
+            }
         }
         
 

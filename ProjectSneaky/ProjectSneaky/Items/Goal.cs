@@ -23,15 +23,8 @@ namespace ProjectSneaky.Items
 
         override public void Update()
         {
-            Rectangle me = new Rectangle(position.ToPoint(), texture.Bounds.Size);
-            Rectangle player = new Rectangle(GameStuff.Instance.player.playerPosition.ToPoint(),
-                GameStuff.Instance.player.size.ToPoint());
-
-            if (me.Intersects(player) && alive)
-                OnPlayerCollision();
-
-            if (!alive)
-                GameStuff.Instance.goal = null;
+            base.Update();
+            
         }
 
     }
