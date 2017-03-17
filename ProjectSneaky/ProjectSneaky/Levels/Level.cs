@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ProjectSneaky.Items;
+using ProjectSneaky.Lighting;
 
 namespace ProjectSneaky.Levels
 {
@@ -19,6 +20,9 @@ namespace ProjectSneaky.Levels
         protected List<Door> levelDoors = new List<Door>();
 
         protected List<Guards> levelGuards = new List<Guards>();
+
+        protected BasicLighting4Shades levelLightingSystem;
+
 
         // Getters
         public Tilemap getTileMap() { return tileMap; }
@@ -34,6 +38,7 @@ namespace ProjectSneaky.Levels
         public Level(Texture2D _BitMap)
         {
             tileMap = new Tilemap( GameStuff.Instance.defaultLevelTextures, _BitMap, 16);
+            levelLightingSystem = new BasicLighting4Shades(tileMap, levelGuards, GameStuff.Instance.basicLighting4Shades);
         }
         
 
@@ -55,6 +60,9 @@ namespace ProjectSneaky.Levels
             {
                 levelGuards[i].Update(tileMap);
             }
+
+                // Update Lighting
+            levelLightingSystem.Update();
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -67,11 +75,14 @@ namespace ProjectSneaky.Levels
                 levelItems[i].Draw(spriteBatch);
             }
 
-            // Draw all levelGuards
+                // Draw all levelGuards
             for (int i = 0; i < levelGuards.Count(); i++)
             {
                 levelGuards[i].Draw(spriteBatch);
             }
+
+                // Draw Lighting
+            levelLightingSystem.Draw(spriteBatch);
         }
     }
 }

@@ -66,6 +66,8 @@
     <Compile Include="Items\Item.cs" />
     <Compile Include="Levels\Level.cs" />
     <Compile Include="Levels\MuseumRoom.cs" />
+    <Compile Include="Lighting\BasicLighting4Shades.cs" />
+    <Compile Include="Lighting\Lighting.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

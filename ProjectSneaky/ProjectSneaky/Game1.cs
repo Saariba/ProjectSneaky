@@ -51,6 +51,11 @@ namespace ProjectSneaky
             GameStuff.Instance.defaultLevelTextures = new Texture2D[] { Content.Load<Texture2D>("Wall"), Content.Load<Texture2D>("Floor") };
             GameStuff.Instance.defaultDoorTextures = new Texture2D[] { Content.Load<Texture2D>("Items/DoorPlaceholderHorizontal"),
                 Content.Load<Texture2D>("Items/DoorPlaceholderVertical") };
+            GameStuff.Instance.basicLighting4Shades = new Texture2D[] {Content.Load<Texture2D>("Shades/Black60Opa"), Content.Load<Texture2D>("Shades/Black45Opa"),
+                Content.Load<Texture2D>("Shades/Black30Opa"), Content.Load<Texture2D>("Shades/Black15Opa")};
+            GameStuff.Instance.guardLight = new Texture2D[] {Content.Load<Texture2D>("Guards/GuardLight/GuardLightNorth"),
+                Content.Load<Texture2D>("Guards/GuardLight/GuardLightEast"), Content.Load<Texture2D>("Guards/GuardLight/GuardLightSouth"),
+                Content.Load<Texture2D>("Guards/GuardLight/GuardLightWest")};
 
             /*************************************************************************************************************************
             * HOW TO CREATE LEVELS
@@ -272,7 +277,7 @@ namespace ProjectSneaky
                         {
                             foreach(Guards guard in museumRoom.getLevelGuards())
                             {
-                                guard.guardPosition = guard.getGuardStartPosition();
+                                guard.setGuardPosition(guard.getGuardStartPosition());
                             }
                         }
                     }
@@ -293,7 +298,7 @@ namespace ProjectSneaky
                         {
                             foreach (Guards guard in museumRoom.getLevelGuards())
                             {
-                                guard.guardPosition = guard.getGuardStartPosition();
+                                guard.setGuardPosition(guard.getGuardStartPosition());
                             }
                         }
 

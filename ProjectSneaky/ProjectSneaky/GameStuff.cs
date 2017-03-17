@@ -28,6 +28,9 @@ namespace ProjectSneaky
         public Texture2D[] defaultLevelTextures;   // Index 0 = Floor, Index 1 = Wall
         public Texture2D[] defaultDoorTextures;    // Index 0 = Horizontal, Index 1 = Vertical
 
+        public Texture2D[] basicLighting4Shades;
+        public Texture2D[] guardLight;  // One for each direction in this order North, East, South, West
+
         public Player player;
         
         public Camera camera;
